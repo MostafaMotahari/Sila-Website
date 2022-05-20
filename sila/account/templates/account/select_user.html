@@ -1,0 +1,354 @@
+{% extends 'account/layouts/master.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block styles %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'account/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'account/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+<!-- BS Stepper -->
+<link rel="stylesheet" href="{% static 'account/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+<!-- dropzonejs -->
+<link rel="stylesheet" href="{% static 'account/plugins/dropzone/min/dropzone.min.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+<!-- Tempusdominus Bbootstrap 4 -->
+<link rel="stylesheet" href="{% static 'account/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-12 col-sm-12">
+
+
+        <div class="card card-warning">
+          <div class="card-header">
+            <h3 class="card-title">Select Target User:</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <select id="user-list" class="form-control select2 select2-danger"
+                data-dropdown-css-class="select2-danger" style="width: 100%;">
+                <option selected="selected">--Select--</option>
+                {% for user in users %}
+                <option>{{user.pk}}: {{user.get_full_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="button" class="btn btn-block btn-primary" onclick="loadUser();">Get User</button>
+            <!-- /.form-group -->
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- <div class="col-12 col-sm-6">
+        <div class="card card-warning">
+          <div class="card-header">
+            <h3 class="card-title">Select Target User:</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <select id="user-list" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
+                <option selected="selected">--Select--</option>
+                {% for user in users %}
+                  <option>{{user.pk}}: {{user.get_full_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="button" class="btn btn-block btn-primary" onclick="loadUser();">Get User</button>
+          </div>
+        </div>
+      </div> -->
+
+
+    </div>
+    <div id="infos">
+    {% if form.as_p %}
+    <div class="row">
+      <div class="col-12 col-sm-12">
+        <!-- general form elements disabled -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">General Elements</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <form method="post" enctype="multipart/form-data" action="{% url 'account:user_update' request.resolver_match.kwargs.pk %}">
+              {% csrf_token %}
+              <h4 style="color: cornsilk;">Personal Informations</h4>
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                    <label>First Name</label>
+                    {{form.first_name|add_class:"form-control"|attr:"placeholder:First Name"}}
+                    <!-- <input type="text" class="form-control" placeholder="First Name"> -->
+                  </div>
+                </div>
+                
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    {{form.last_name|add_class:"form-control"|attr:"placeholder:Last Name"}}
+                    <!-- <input type="text" class="form-control" placeholder="Last Name"> -->
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                    <label>Email</label>
+                    {{form.email|add_class:"form-control"|attr:"placeholder:Email"}}
+                    <!-- <input type="text" class="form-control" placeholder="Email"> -->
+                  </div>
+                </div>
+                
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                    <label>Telegram Username</label>
+                    {{form.user_telegram_id|add_class:"form-control"|attr:"placeholder:Telegram Username"}}
+                    <!-- <input type="text" class="form-control" placeholder="Telegram Username"> -->
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="exampleInputFile">Gravatar</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        {{form.profile_picture|add_class:"custom-file-input"|attr:"id:exampleInputFile"}}
+                        <!-- <input type="file" class="custom-file-input" id="exampleInputFile"> -->
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              
+              <h4 style="margin-top: 15px; color: cornsilk;">Depriving Status</h4>
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <div class="form-check">
+                      {{form.is_banned|add_class:"form-check-input"}}
+                      <!-- <input class="form-check-input" type="checkbox"> -->
+                      <label class="form-check-label">Banned</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Ban Date:</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                      {{form.banned_date|add_class:"form-control datetimepicker-input"|attr:"data-target:#reservationdate"}}
+                      <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/> -->
+                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                        <div class="input-group-text" onclick=""><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- textarea -->
+                  <div class="form-group">
+                    <label>Ban Reason</label>
+                    {{form.ban_reason|add_class:"form-control"|attr:"rows:3"|attr:"placeholder:Type Reason ..."}}
+                    <!-- <textarea class="form-control" rows="3" placeholder="Type Reason ..."></textarea> -->
+                  </div>
+                </div>
+                
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <div class="form-check">
+                      {{form.is_deprived|add_class:"form-check-input"}}
+                      <!-- <input class="form-check-input" type="checkbox"> -->
+                      <label class="form-check-label">Deprived</label>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Deprive Date:</label>
+                    <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                      {{form.deprived_date|add_class:"form-control datetimepicker-input"|attr:"data-target:#reservationdate2"}}
+                      <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2"/> -->
+                      <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
+                        <div class="input-group-text" onclick=""><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Deprive Reason</label>
+                    {{form.deprived_reason|add_class:"form-control"|attr:"rows:3"|attr:"placeholder:Type Reason ..."}}
+                    <!-- <textarea class="form-control" rows="3" placeholder="Type Reason ..."></textarea> -->
+                  </div>
+                </div>
+                
+              </div>
+
+              <h4 style="margin-top: 15px; color: cornsilk;">League Status</h4>
+              <div class="row">
+
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <div class="form-check">
+                      {{form.is_admin|add_class:"form-check-input"}}
+                      <!-- <input class="form-check-input" type="checkbox"> -->
+                      <label class="form-check-label">Admin</label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <div class="form-check">
+                      {{form.is_captain|add_class:"form-check-input"}}
+                      <!-- <input class="form-check-input" type="checkbox"> -->
+                      <label class="form-check-label">Captain</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <div class="form-check">
+                      {{form.is_refree|add_class:"form-check-input"}}
+                      <!-- <input class="form-check-input" type="checkbox"> -->
+                      <label class="form-check-label">Refree</label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <div class="form-check">
+                      {{form.is_reporter|add_class:"form-check-input"}}
+                      <!-- <input class="form-check-input" type="checkbox"> -->
+                      <label class="form-check-label">Reporter</label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>Red Cards</label>
+                    {{form.red_cards|add_class:"form-control"|attr:"placeholder:Red Cards"}}
+                    <!-- <input type="text" class="form-control" placeholder="Red Cards"> -->
+                  </div>
+                </div>
+                
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>Yellow Cards</label>
+                    {{form.yellow_cards|add_class:"form-control"|attr:"placeholder:Yellow Cards"}}
+                    <!-- <input type="text" class="form-control" placeholder="Yellow Cards"> -->
+                  </div>
+                </div>
+                
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>Season Goals</label>
+                    {{form.season_goals|add_class:"form-control"|attr:"placeholder:Season Goals"}}
+                    <!-- <input type="text" class="form-control" placeholder="Season Goals"> -->
+                  </div>
+                </div>
+                
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>Total Goals</label>
+                    {{form.total_goals|add_class:"form-control"|attr:"placeholder:Total Goals"}}
+                    <!-- <input type="text" class="form-control" placeholder="Total Goals"> -->
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label>Played Games</label>
+                    {{form.played_games|add_class:"form-control"|attr:"placeholder:Played Games"}}
+                    <!-- <input type="text" class="form-control" placeholder="Played Games"> -->
+                  </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <label>Team</label>
+                    {{form.team|add_class:"form-control"}}
+                    <!-- <select class="form-control">
+                      <option>option 1</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select> -->
+                  </div>
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label>Player Character</label>
+                    {{form.player_character|add_class:"form-control"|attr:"placeholder:Player Character"}}
+                    <!-- <input type="text" class="form-control" placeholder="Player Character"> -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-4">
+                  <button class="btn btn-block btn-success btn-lg">Update</button>
+                </div>
+              </div>
+
+            </form>
+            
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script src="{% static 'account/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'account/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'account/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<!-- InputMask -->
+<script src="{% static 'account/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'account/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
+<!-- bootstrap color picker -->
+<script src="{% static 'account/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{% static 'account/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<!-- Custom JS -->
+<script src="{% static 'account/dist/js/select_user.js' %}"></script>
+{% endblock %}

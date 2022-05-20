@@ -1,33 +1,176 @@
-<div class="sidebar-wrapper active">
-    <div class="sidebar-header">
-        <div class="d-flex justify-content-between">
-            <div class="logo">
-                <a href="index.html"><img src="assets/images/logo/logo.png" alt="Logo" srcset=""></a>
-            </div>
-            <div class="toggler">
-                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-            </div>
-        </div>
+{% load static %}
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="index3.html" class="brand-link">
+    <img src="/media/images/website_pictures/sidebar-logo.png" alt="AdminLTE Logo"
+      class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">Sila</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="{% static 'account/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+      </div>
+      <div class="info">
+        <a href="#" class="d-block">{{user.get_full_name}}</a>
+      </div>
     </div>
-    <div class="sidebar-menu">
-        <ul class="menu">{% for sidebarItem in sidebarItems %}{% if sidebarItem.isTitle %}
-            <li class="sidebar-title">{{sidebarItem.name}}</li>
-            {% else %}
-            <li
-                class="sidebar-item {{ 'active' if (sidebarItem.url == filename or filename|startsWith(sidebarItem.key)) }} {{'has-sub' if sidebarItem.submenu.length > 0 }}">
-                <a href="{{sidebarItem.url if sidebarItem.url!==undefined else '#'}}" class='sidebar-link'>
-                    <i class="bi bi-{{ sidebarItem.icon }}"></i>
-                    <span>{{sidebarItem.name}}</span>
-                </a>{% if sidebarItem.submenu.length > 0 %}
-                <ul class="submenu {{ 'active' if (sub.url == filename or filename|startsWith(sidebarItem.key)) }}">{%
-                    for sub in sidebarItem.submenu %}
-                    <li class="submenu-item {{ 'active' if sub.url == filename }}">
-                        <a href="{{ sub.url }}">{{ sub.name }}</a>
-                    </li>{% endfor %}
-                </ul>{% endif %}
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+        <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:profile' %}" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>League</p>
+              </a>
             </li>
-            {% endif %}{% endfor %}
-        </ul>
-    </div>
-    <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
-</div>
+          </ul>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:tournament' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tournoments</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {% if user.is_admin %}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+              Admin Panel
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:user_control' %}" class="nav-link">
+                <i class="far fa-gears nav-icon"></i>
+                <p>User Control</p>
+              </a>
+            </li>
+          </ul>
+          {% if user.admin_level == 1 or user.is_superuser%}
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:register_user' %}" class="nav-link">
+                <i class="fas fa-plus nav-icon"></i>
+                <p>Register User</p>
+              </a>
+            </li>
+          </ul>
+          {% endif %}
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:tournament' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add Refree</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+
+        {% if user.is_refree %}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+              Rfree Panel
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:profile' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create Game</p>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:tournament' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Games</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+
+        {% if user.is_reporter %}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+              Reporter Panel
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:profile' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Send Report</p>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'account:tournament' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Games</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-copy"></i>
+            <p>
+              Layout Options
+              <i class="fas fa-angle-left right"></i>
+              <span class="badge badge-info right">6</span>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="pages/layout/top-nav.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Top Navigation</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Top Navigation</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

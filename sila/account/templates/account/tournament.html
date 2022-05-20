@@ -1,0 +1,98 @@
+{% extends 'account/layouts/master.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="card-footer">
+    <div class="row">
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-success"><ion-icon name="flame"></ion-icon></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Fight Night</span>
+                <span class="info-box-number">23:00 Every Night</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
+        {% for tournament in context %}
+        
+          {% if tournament.is_active %}
+          
+          <!-- /.col -->
+            {% if user in tournament.participants.all %}
+            <div class="col-md-4 col-sm-6 col-12">
+              <a onclick="alreadyRegistred();">
+                <div class="info-box" id="register-box">
+
+                    <span class="info-box-icon bg-info"><ion-icon name="trophy"></ion-icon></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">{{tournament.name}}</span>
+                    <span class="info-box-number">{{tournament.start_at}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </a>
+            </div>
+            {% else %}
+            <div class="col-md-4 col-sm-6 col-12">
+              <a onclick="confirmPage({{tournament.pk}});" id="register-box-{{tournament.pk}}">
+                <div class="info-box">
+
+                    <span class="info-box-icon bg-success" id="register-span-{{tournament.pk}}"><ion-icon name="trophy"></ion-icon></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">{{tournament.name}}</span>
+                    <span class="info-box-number">{{tournament.start_at}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </a>
+            </div>
+            {% endif %}
+
+          
+            <!-- /.col -->
+
+          {% else %}
+
+          <!-- /.col -->
+            <div class="col-md-4 col-sm-6 col-12">
+              <a href="http://" target="_blank" rel="noopener noreferrer">
+                <div class="info-box">
+                    <span class="info-box-icon bg-danger"><ion-icon name="trophy"></ion-icon></span>
+        
+                    <div class="info-box-content">
+                    <span class="info-box-text">{{tournament.name}}</span>
+                    <span class="info-box-number">Winner: {{tournament.winner.get_full_name}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+              </a>
+              <!-- /.info-box -->
+            </div>
+              <!-- /.col -->
+
+          {% endif %}
+
+        {% endfor %}
+
+        <!-- /.col -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{% static 'account/dist/js/tournaments.js' %}"></script>
+{% endblock %}
