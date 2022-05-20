@@ -8,7 +8,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=30, blank=True)
     is_admin = models.BooleanField(default=False, verbose_name="Admin")
     is_captain = models.BooleanField(default=False, verbose_name="Captain")
-    is_refree = models.BooleanField(default=False, verbose_name="Refree")
+    is_referee = models.BooleanField(default=False, verbose_name="Referee")
     is_reporter = models.BooleanField(default=False, verbose_name="Reporter")
     profile_picture = models.ImageField(upload_to='images/profile_pictures/', blank=True, verbose_name="Profile Picture")
     user_telegram_id = models.CharField(max_length=100, blank=True, verbose_name="Telegram ID")
@@ -47,7 +47,7 @@ class User(AbstractUser):
         verbose_name_plural = "Users"
 
 
-class Refree(models.Model):
+class Referee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Refree")
     level = models.IntegerField(default=0, verbose_name="Level")
     experience = models.IntegerField(default=0, verbose_name="Experience")
@@ -56,6 +56,9 @@ class Refree(models.Model):
     class Meta:
         verbose_name = "Refree"
         verbose_name_plural = "Refrees"
+
+    def __str__(self):
+        return self.user.get_full_name()
 
 
 class Reporter(models.Model):
@@ -67,6 +70,9 @@ class Reporter(models.Model):
     class Meta:
         verbose_name = "Reporter"
         verbose_name_plural = "Reporters"
+
+    def __str__(self):
+        return self.user.get_full_name()
 
 
 class Report(models.Model):

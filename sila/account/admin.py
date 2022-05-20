@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from account.models import User, Refree, Reporter
+from account.models import User, Referee, Reporter
 
 # Admin models
-class RefreeAdmin(admin.ModelAdmin):
+class RefereeAdmin(admin.ModelAdmin):
     list_display = ('user',)
 
 
@@ -15,7 +15,7 @@ UserAdmin.fieldsets += (
     ("Custom Fields", {"fields": (
         "is_admin" ,
         "is_captain" ,
-        "is_refree" ,
+        "is_referee" ,
         "is_reporter" ,
         "profile_picture" ,
         "user_telegram_id" ,
@@ -41,5 +41,5 @@ UserAdmin.fieldsets += (
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
-admin.site.register(Refree, RefreeAdmin)
+admin.site.register(Referee, RefereeAdmin)
 admin.site.register(Reporter, ReporterAdmin)

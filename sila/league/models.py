@@ -13,6 +13,9 @@ class League(models.Model):
         verbose_name = "League"
         verbose_name_plural = "Leagues"
 
+    def __str__(self):
+        return self.name
+
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
@@ -32,6 +35,9 @@ class Team(models.Model):
     class Meta:
         verbose_name = "Team"
         verbose_name_plural = "Teams"
+
+    def __str__(self):
+        return self.name
 
 
 class Transfers(models.Model):
@@ -56,13 +62,16 @@ class Trophy(models.Model):
         verbose_name = "Trophy"
         verbose_name_plural = "Trophies"
 
+    def __str__(self):
+        return self.name
+
 
 class Tournament(models.Model):
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     start_at = models.DateTimeField(auto_now_add=True, null=True)
     end_at = models.DateTimeField(auto_now_add=True, null=True)
-    refree = models.OneToOneField("account.Refree", on_delete=models.SET_NULL, null=True, blank=True, related_name='refree')
+    referee = models.OneToOneField("account.Referee", on_delete=models.SET_NULL, null=True, blank=True, related_name='referee')
     is_active = models.BooleanField(default=False)
     winner = models.OneToOneField("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='winner')
     participants = models.ManyToManyField("account.User", null=True, blank=True, related_name='participants')
@@ -70,6 +79,9 @@ class Tournament(models.Model):
     class Meta:
         verbose_name = "Tournament"
         verbose_name_plural = "Tournaments"
+
+    def __str__(self):
+        return self.name
 
 
 class Game(models.Model):
@@ -81,7 +93,12 @@ class Game(models.Model):
     away_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='away_scores')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     starts_at = models.DateTimeField(auto_now_add=False, null=True)
-    refree = models.OneToOneField("account.Refree", on_delete=models.SET_NULL, null=True, blank=True)
+    referee = models.OneToOneField("account.Referee", on_delete=models.SET_NULL, null=True, blank=True)
+    speed_pictures = models.ImageField(upload_to='images/game_pics/speed_pictures/', blank=True)
+    info_pictures = models.ImageField(upload_to='images/game_pics/info_pictures/', blank=True)
+    powerful_pictures = models.ImageField(upload_to='images/game_pics/powerful_pictures/', blank=True)
+    search_pictures = models.ImageField(upload_to='images/game_pics/search_pictures/', blank=True)
+    legendary_pictures = models.ImageField(upload_to='images/game_pics/legendary_pictures/', blank=True)
 
     class Meta:
         verbose_name = "Game"

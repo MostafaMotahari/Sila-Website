@@ -1,6 +1,8 @@
-from account.models import User
+from account.models import Report, User, Referee, Reporter
+from league.models import Game
 from django import forms
 import datetime
+
 
 # Forms
 class UpdateUserForm(forms.ModelForm):
@@ -14,7 +16,7 @@ class UpdateUserForm(forms.ModelForm):
             "is_admin",
             # "amdin_level", # Add this field later to html template and set their permissions
             "is_captain",
-            "is_refree",
+            "is_referee",
             "is_reporter",
             "profile_picture",
             "user_telegram_id",
@@ -54,16 +56,16 @@ class UpdateUserForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(UpdateUserForm, self).clean()
-
         # Apply football rules
         self.football_rules_controler()
+        self.referee_object_controler()
+        self.reporter_object_controler()
 
         return cleaned_data
 
 
     # Football rules controler
     def football_rules_controler(self):
-
         # Control goals
         if self.instance.total_goals == 0:
             self.cleaned_data['total_goals'] = self.cleaned_data['season_goals']
@@ -84,7 +86,29 @@ class UpdateUserForm(forms.ModelForm):
             self.cleaned_data['deprived_date'] = datetime.datetime.now() + datetime.timedelta(days=1)
             self.cleaned_data['deprived_reason'] = 'Red cards'
 
+    # Check if user is referee
+    def referee_object_controler(self):
+        # Control referees
+        if self.cleaned_data['is_referee'] and not self.instance.is_referee:
+            print("referee added")
+            Referee.objects.create(user=self.instance)
+        
+        elif not self.cleaned_data['is_referee'] and self.instance.is_referee:
+            print("referee deleted")
+            Referee.objects.get(user=self.instance).delete()
 
+    # Check if user is reporter
+    def reporter_object_controler(self):
+        # Control reporters
+        if self.cleaned_data['is_reporter'] and not self.instance.is_reporter:
+            print("reporter added")
+            Reporter.objects.create(user=self.instance)
+        
+        elif not self.cleaned_data['is_reporter'] and self.instance.is_reporter:
+            print("reporter deleted")
+            Reporter.objects.get(user=self.instance).delete()
+
+# A form for creating new users
 class CreateUserForm(forms.ModelForm):
 
     class Meta:
@@ -114,3 +138,30 @@ class CreateUserForm(forms.ModelForm):
             self.fields['is_active'].disabled = True
             self.fields['is_admin'].disabled = True
             self.fields['admin_level'].disabled = True
+
+# A form for creating new games
+class CreateGameForm(forms.ModelForm):
+
+    class Meta:
+        model = Game
+        fields = [
+            "league",
+            "home_team",
+            "away_team",
+            "starts_at",
+            "referee",
+            "speed_pictures",
+            "info_pictures",
+            "powerful_pictures",
+            "search_pictures",
+            "legendary_pictures",
+        ]
+
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(CreateGameForm, self).__init__(*args, **kwargs)
+
+        if not user.is_admin:
+            # Disable fields
+            self.fields['referee'].disabled = True

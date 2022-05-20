@@ -4,10 +4,10 @@ from django.views.generic import ListView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from league.models import Team, Tournament
+from league.models import Game, Team, Tournament
 from account.models import User
-from account.forms import UpdateUserForm, CreateUserForm
-from account.mixins import AdminMixin, TopLevelAdminMixin
+from account.forms import UpdateUserForm, CreateUserForm, CreateGameForm
+from account.mixins import AdminMixin, TopLevelAdminMixin, RefereeMixin
 
 # Create your views here.
 
@@ -90,3 +90,15 @@ class CreateUserView(LoginRequiredMixin, TopLevelAdminMixin, CreateView):
         kwargs = super(CreateUserView, self).get_form_kwargs()
         kwargs.update({'user': self.request.user})
         return kwargs
+
+
+class CraeteGameView(LoginRequiredMixin, RefereeMixin, CreateView):
+    model = Game
+    form_class = CreateGameForm
+    template_name = 'account/create_game.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(CraeteGameView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
