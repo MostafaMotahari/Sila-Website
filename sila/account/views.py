@@ -4,8 +4,8 @@ from django.views.generic import ListView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from league.models import Game, Team, Tournament
-from account.models import User
+from league.models import Game, Team, Tournament, GameImage, League
+from account.models import User, Referee
 from account.forms import UpdateUserForm, CreateUserForm, CreateGameForm
 from account.mixins import AdminMixin, TopLevelAdminMixin, RefereeMixin
 
@@ -102,3 +102,62 @@ class CraeteGameView(LoginRequiredMixin, RefereeMixin, CreateView):
         kwargs.update({'user': self.request.user})
         return kwargs
 
+    def post(self, request, *args, **kwargs):
+        # Create new game
+        new_game = Game.objects.create(
+            league = League.objects.get(pk=request.POST['league']),
+            home_team = Team.objects.get(pk=request.POST['home_team']),
+            away_team = Team.objects.get(pk=request.POST['away_team']),
+            referee = Referee.objects.get(pk=request.POST['referee']),
+            starts_at = request.POST['starts_at'],
+        )
+
+        print(request.POST['starts_at'])
+
+        # Get game images and save them to the database
+        images = [(tipic_name, img) for tipic_name, img in request.FILES.items()]
+        post_items = {tipic_name:value for tipic_name, value in request.POST.items()}
+
+
+        for tipic_name, img in images:
+            if "speed" in tipic_name:
+                GameImage.objects.create(
+                    game = new_game,
+                    image = img,
+                    name = post_items[tipic_name + "_name"],
+                    type = "speed",
+                )
+
+            elif "power" in tipic_name:
+                GameImage.objects.create(
+                    game = new_game,
+                    image = img,
+                    name = post_items[tipic_name + "_name"],
+                    type = "power",
+                )
+
+            elif "info" in tipic_name:
+                GameImage.objects.create(
+                    game = new_game,
+                    image = img,
+                    name = post_items[tipic_name + "_name"],
+                    type = "info",
+                )
+
+            elif "legend" in tipic_name:
+                GameImage.objects.create(
+                    game = new_game,
+                    image = img,
+                    name = post_items[tipic_name + "_name"],
+                    type = "legend",
+                )
+
+            else:
+                GameImage.objects.create(
+                    game = new_game,
+                    image = img,
+                    name = post_items[tipic_name + "_name"],
+                    type = "search",
+                )
+
+        return HttpResponseRedirect(reverse_lazy('account:profile'))

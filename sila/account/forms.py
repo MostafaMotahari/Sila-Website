@@ -1,5 +1,5 @@
 from account.models import Report, User, Referee, Reporter
-from league.models import Game
+from league.models import Game, GameImage
 from django import forms
 import datetime
 
@@ -142,6 +142,57 @@ class CreateUserForm(forms.ModelForm):
 # A form for creating new games
 class CreateGameForm(forms.ModelForm):
 
+    # Additional fields
+    # Speed imgs of game
+    speed_img_one = forms.ImageField(required=False)
+    speed_img_one_name = forms.CharField(required=False)
+    speed_img_two = forms.ImageField(required=False)
+    speed_img_two_name = forms.CharField(required=False)
+    speed_img_three = forms.ImageField(required=False)
+    speed_img_three_name = forms.CharField(required=False)
+    speed_img_four = forms.ImageField(required=False)
+    speed_img_four_name = forms.CharField(required=False)
+
+    # Info imgs of game
+    info_img_one = forms.ImageField(required=False)
+    info_img_one_name = forms.CharField(required=False)
+    info_img_two = forms.ImageField(required=False)
+    info_img_two_name = forms.CharField(required=False)
+    info_img_three = forms.ImageField(required=False)
+    info_img_three_name = forms.CharField(required=False)
+    info_img_four = forms.ImageField(required=False)
+    info_img_four_name = forms.CharField(required=False)
+
+    # Power imgs of game
+    power_img_one = forms.ImageField(required=False)
+    power_img_one_name = forms.CharField(required=False)
+    power_img_two = forms.ImageField(required=False)
+    power_img_two_name = forms.CharField(required=False)
+    power_img_three = forms.ImageField(required=False)
+    power_img_three_name = forms.CharField(required=False)
+    power_img_four = forms.ImageField(required=False)
+    power_img_four_name = forms.CharField(required=False)
+
+    # Legend imgs of game
+    legend_img_one = forms.ImageField(required=False)
+    legend_img_one_name = forms.CharField(required=False)
+    legend_img_two = forms.ImageField(required=False)
+    legend_img_two_name = forms.CharField(required=False)
+    legend_img_three = forms.ImageField(required=False)
+    legend_img_three_name = forms.CharField(required=False)
+    legend_img_four = forms.ImageField(required=False)
+    legend_img_four_name = forms.CharField(required=False)
+
+    # Search imgs of game
+    search_img_one = forms.ImageField(required=False)
+    search_img_one_name = forms.CharField(required=False)
+    search_img_two = forms.ImageField(required=False)
+    search_img_two_name = forms.CharField(required=False)
+    search_img_three = forms.ImageField(required=False)
+    search_img_three_name = forms.CharField(required=False)
+    search_img_four = forms.ImageField(required=False)
+    search_img_four_name = forms.CharField(required=False)
+
     class Meta:
         model = Game
         fields = [
@@ -150,11 +201,6 @@ class CreateGameForm(forms.ModelForm):
             "away_team",
             "starts_at",
             "referee",
-            "speed_pictures",
-            "info_pictures",
-            "powerful_pictures",
-            "search_pictures",
-            "legendary_pictures",
         ]
 
 
@@ -165,3 +211,4 @@ class CreateGameForm(forms.ModelForm):
         if not user.is_admin:
             # Disable fields
             self.fields['referee'].disabled = True
+

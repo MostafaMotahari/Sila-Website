@@ -48,14 +48,14 @@ class User(AbstractUser):
 
 
 class Referee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Refree")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Referee")
     level = models.IntegerField(default=0, verbose_name="Level")
     experience = models.IntegerField(default=0, verbose_name="Experience")
     level_up_date = models.DateTimeField(blank=True, null=True, verbose_name="Level Up Date")
 
     class Meta:
-        verbose_name = "Refree"
-        verbose_name_plural = "Refrees"
+        verbose_name = "Referee"
+        verbose_name_plural = "Referees"
 
     def __str__(self):
         return self.user.get_full_name()

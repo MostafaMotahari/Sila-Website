@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="{% static 'account/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
 <!-- Tempusdominus Bbootstrap 4 -->
 <link rel="stylesheet" href="{% static 'account/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'account/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -34,9 +36,10 @@
 
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
-
+              
+              <h5 style="color: rgb(95, 194, 255);">Game details:</h4>
               <div class="row">
-
+                
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label>League:</label>
@@ -59,79 +62,6 @@
                 </div>
               </div>
 
-              <!-- Upload pictures -->
-              <div class="row">
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="speedLoadPics">Speed Pics:</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        {{form.speed_pictures|add_class:"custom-file-input"|attr:"id:speedLoadPics"|attr:"multiple"|attr:"type:file"|attr:"name:speeds"}}
-                        <label class="custom-file-label" for="speedLoadPics"></label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="exampleInputFile">Info Pics:</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        {{form.info_pictures|add_class:"custom-file-input"|attr:"id:exampleInputFile"|attr:"multiple"|attr:"type:file"|attr:"name:infos"}}
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="row">
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="exampleInputFile">Power Pics:</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        {{form.powerful_pictures|add_class:"custom-file-input"|attr:"id:exampleInputFile"|attr:"multiple"|attr:"type:file"|attr:"name:powers"}}
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="exampleInputFile">Search Pics:</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        {{form.search_pictures|add_class:"custom-file-input"|attr:"id:exampleInputFile"|attr:"multiple"|attr:"type:file"|attr:"name:searches"}}
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="row">
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="exampleInputFile">Legend Pics:</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        {{form.legendary_pictures|add_class:"custom-file-input"|attr:"id:exampleInputFile"|attr:"multiple"|attr:"type:file"|attr:"name:legends"}}
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
@@ -144,7 +74,8 @@
                   <div class="form-group">
                     <label>Date and time of start:</label>
                       <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                          <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
+                          {{form.starts_at|add_class:"form-control datetimepicker-input"|attr:"data-target=#reservationdatetime"}}
+                          <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/> -->
                           <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
                               <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                           </div>
@@ -153,6 +84,507 @@
                 </div>
               </div>
 
+              <!-- Upload pictures -->
+
+              <!-- Speed pictures -->
+
+              <div class="form-group clearfix">
+                <div class="icheck-primary d-inline">
+                  <input type="checkbox" id="speedPicsEnabledCheck" onclick="showStatusChanger('speedPicsSection', 'speedPicsEnabledCheck');">
+                  <label for="speedPicsEnabledCheck">Speed pictures enabled</label>
+                </div>
+              </div>
+
+              <div class="speed-pics" style="display: none;" id="speedPicsSection">
+                <h5 style="color: rgb(95, 194, 255);">Upload speed pictures:</h4>
+                <div class="row">
+
+                  
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.speed_img_one|add_class:"custom-file-input"|attr:"id:searchLoadPics1"}}
+                          <label class="custom-file-label" for="searchLoadPics1">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.speed_img_one_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.speed_img_two|add_class:"custom-file-input"|attr:"id:searchLoadPics2"}}
+                          <label class="custom-file-label" for="searchLoadPics2">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.speed_img_two_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.speed_img_three|add_class:"custom-file-input"|attr:"id:searchLoadPics3"}}
+                          <label class="custom-file-label" for="searchLoadPics3">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.speed_img_three_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.speed_img_four|add_class:"custom-file-input"|attr:"id:searchLoadPics4"}}
+                          <label class="custom-file-label" for="searchLoadPics4">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.speed_img_four_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+              </div>
+
+              <!-- Power pictures -->
+
+              <div class="form-group clearfix">
+                <div class="icheck-primary d-inline">
+                  <input type="checkbox" id="powerPicsEnabledCheck" onclick="showStatusChanger('powerPicsSection', 'powerPicsEnabledCheck');">
+                  <label for="powerPicsEnabledCheck">Power pictures enabled</label>
+                </div>
+              </div>
+
+              <div class="power-pics" style="display: none;" id="powerPicsSection">
+                <h5 style="color: rgb(95, 194, 255);">Upload power pictures:</h4>
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.power_img_one|add_class:"custom-file-input"|attr:"id:searchLoadPics1"}}
+                          <!-- <input type="file" multiple id="speedLoadPics1"> -->
+                          <label class="custom-file-label" for="searchLoadPics1">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.power_img_one_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.power_img_two|add_class:"custom-file-input"|attr:"id:searchLoadPics2"}}
+                          <!-- <input type="file" multiple id="speedLoadPics2"> -->
+                          <label class="custom-file-label" for="searchLoadPics2">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.power_img_two_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.power_img_three|add_class:"custom-file-input"|attr:"id:searchLoadPics3"}}
+                          <!-- <input type="file" multiple id="speedLoadPics3"> -->
+                          <label class="custom-file-label" for="searchLoadPics3">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.power_img_three_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.power_img_four|add_class:"custom-file-input"|attr:"id:searchLoadPics4"}}
+                          <!-- <input type="file" multiple id="speedLoadPics4"> -->
+                          <label class="custom-file-label" for="searchLoadPics4">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.power_img_four_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+              </div>
+
+              <!-- Info pictures -->
+
+              <div class="form-group clearfix">
+                <div class="icheck-primary d-inline">
+                  <input type="checkbox" id="infoPicsEnabledCheck" onclick="showStatusChanger('infoPicsSection', 'infoPicsEnabledCheck');">
+                  <label for="infoPicsEnabledCheck">Info pictures enabled</label>
+                </div>
+              </div>
+
+              <div class="info-pics" style="display: none;" id="infoPicsSection">
+                <h5 style="color: rgb(95, 194, 255);">Upload info pictures:</h4>
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.info_img_one|add_class:"custom-file-input"|attr:"id:infoLoadPics1"}}
+                          <label class="custom-file-label" for="infoLoadPics1">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.info_img_one_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.info_img_two|add_class:"custom-file-input"|attr:"id:infoLoadPics2"}}
+                          <label class="custom-file-label" for="infoLoadPics2">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.info_img_two_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.info_img_three|add_class:"custom-file-input"|attr:"id:infoLoadPics3"}}
+                          <label class="custom-file-label" for="infoLoadPics3">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.info_img_three_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.info_img_four|add_class:"custom-file-input"|attr:"id:infoLoadPics4"}}
+                          <label class="custom-file-label" for="infoLoadPics4">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.info_img_four_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
+              <!-- Search pictures -->
+
+              <div class="form-group clearfix">
+                <div class="icheck-primary d-inline">
+                  <input type="checkbox" id="searchPicsEnabledCheck" onclick="showStatusChanger('searchPicsSection', 'searchPicsEnabledCheck');">
+                  <label for="searchPicsEnabledCheck">Search pictures enabled</label>
+                </div>
+              </div>
+
+              <div class="search-pics" style="display: none;" id="searchPicsSection">
+                <h5 style="color: rgb(95, 194, 255);">Upload search pictures:</h4>
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.search_img_one|add_class:"custom-file-input"|attr:"id:searchLoadPics1"}}
+                          <label class="custom-file-label" for="searchLoadPics1">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.search_img_one_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.search_img_two|add_class:"custom-file-input"|attr:"id:searchLoadPics2"}}
+                          <label class="custom-file-label" for="searchLoadPics2">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.search_img_two_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.search_img_three|add_class:"custom-file-input"|attr:"id:searchLoadPics3"}}
+                          <label class="custom-file-label" for="searchLoadPics3">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.search_img_three_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.search_img_four|add_class:"custom-file-input"|attr:"id:searchLoadPics4"}}
+                          <label class="custom-file-label" for="searchLoadPics4">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.search_img_four_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
+              <!-- Legend pictures -->
+
+              <div class="form-group clearfix">
+                <div class="icheck-primary d-inline">
+                  <input type="checkbox" id="legendPicsEnabledCheck" onclick="showStatusChanger('legendPicsSection', 'legendPicsEnabledCheck');">
+                  <label for="legendPicsEnabledCheck">Legend pictures enabled</label>
+                </div>
+              </div>
+
+              <div class="legend-pics" style="display: none;" id="legendPicsSection">
+                <h5 style="color: rgb(95, 194, 255);">Upload legend pictures:</h4>
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.legend_img_one|add_class:"custom-file-input"|attr:"id:legendLoadPics1"}}
+                          <label class="custom-file-label" for="legendLoadPics1">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.legend_img_one_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.legend_img_two|add_class:"custom-file-input"|attr:"id:legendLoadPics2"}}
+                          <label class="custom-file-label" for="legendLoadPics2">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.legend_img_two_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.legend_img_three|add_class:"custom-file-input"|attr:"id:legendLoadPics3"}}
+                          <label class="custom-file-label" for="legendLoadPics3">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.legend_img_three_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {{form.legend_img_four|add_class:"custom-file-input"|attr:"id:legendLoadPics4"}}
+                          <label class="custom-file-label" for="legendLoadPics4">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      {{form.legend_img_four_name|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Persian first or last name ..."}}
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
 
               <div class="row">
                 <div class="col-sm-4">
@@ -186,4 +618,32 @@
 <script src="{% static 'account/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 <!-- Custom JS -->
 <script src="{% static 'account/dist/js/select_user.js' %}"></script>
+<!-- Bootstrap Switch -->
+<script src="{% static 'account/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+
+<script>
+  speedPicsCheckBox = document.getElementById('speedPicsEnabledCheck');
+  speedPicsCheckBox.checked = false;
+  
+  powerPicsCheckBox = document.getElementById('powerPicsEnabledCheck');
+  powerPicsCheckBox.checked = false;
+
+  infoPicsCheckBox = document.getElementById('infoPicsEnabledCheck');
+  infoPicsCheckBox.checked = false;
+  
+  searchPicsCheckBox = document.getElementById('searchPicsEnabledCheck');
+  searchPicsCheckBox.checked = false;
+  
+  legendPicsCheckBox = document.getElementById('legendPicsEnabledCheck');
+  legendPicsCheckBox.checked = false;
+
+  function showStatusChanger(elementId, checkBoxId) {
+    if (document.getElementById(checkBoxId).checked) {
+      document.getElementById(elementId).style.display = 'block';
+    } else {
+      document.getElementById(elementId).style.display = 'none';
+    }
+  }
+    
+</script>
 {% endblock %}

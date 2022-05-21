@@ -85,21 +85,34 @@ class Tournament(models.Model):
 
 
 class Game(models.Model):
-    tournament = models.OneToOneField(Tournament, on_delete=models.CASCADE, null=True, blank=True)
-    league = models.OneToOneField(League, on_delete=models.CASCADE, null=True, blank=True)
-    home_team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name='home')
-    away_team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name='away')
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True, blank=True)
+    league = models.ForeignKey(League, on_delete=models.CASCADE, null=True, blank=True)
+    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home')
+    away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away')
     home_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='home_scores')
     away_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='away_scores')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     starts_at = models.DateTimeField(auto_now_add=False, null=True)
-    referee = models.OneToOneField("account.Referee", on_delete=models.SET_NULL, null=True, blank=True)
-    speed_pictures = models.ImageField(upload_to='images/game_pics/speed_pictures/', blank=True)
-    info_pictures = models.ImageField(upload_to='images/game_pics/info_pictures/', blank=True)
-    powerful_pictures = models.ImageField(upload_to='images/game_pics/powerful_pictures/', blank=True)
-    search_pictures = models.ImageField(upload_to='images/game_pics/search_pictures/', blank=True)
-    legendary_pictures = models.ImageField(upload_to='images/game_pics/legendary_pictures/', blank=True)
+    referee = models.ForeignKey("account.Referee", on_delete=models.SET_NULL, null=True, blank=True)
+
 
     class Meta:
         verbose_name = "Game"
         verbose_name_plural = "Games"
+
+    def __str__(self):
+        return self.home_team.name + " vs " + self.away_team.name
+
+# Images
+class GameImage(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to='images/game_pics/')
+    type = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = "GameImage"
+        verbose_name_plural = "GameImages"
+
+    def get_game_details(self):
+        return self.game.home_team.name + " vs " + self.game.away_team.name
