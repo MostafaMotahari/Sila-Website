@@ -1,13 +1,14 @@
-from typing import final
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, HttpResponse
 from django.views.generic import ListView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
 from league.models import Game, Team, Tournament, GameImage, League
 from account.models import User, Referee
-from account.forms import UpdateUserForm, CreateUserForm, CreateGameForm
+from account.forms import UpdateUserForm, CreateUserForm, CreateGameForm, MatchEditForm
 from account.mixins import AdminMixin, TopLevelAdminMixin, RefereeMixin
+from account.utilities import iranDateTime
+
+from datetime import time, datetime
 
 # Create your views here.
 
@@ -79,12 +80,6 @@ class CreateUserView(LoginRequiredMixin, TopLevelAdminMixin, CreateView):
     model = User
     form_class = CreateUserForm
     template_name = 'account/create_user.html'
-
-    # def form_valid(self, form):
-    #     user = form.save(commit=False)
-    #     user.set_password(form.cleaned_data['password'])
-    #     user.save()
-    #     return HttpResponseRedirect(reverse_lazy('account:profile'))
 
     def get_form_kwargs(self):
         kwargs = super(CreateUserView, self).get_form_kwargs()
@@ -161,3 +156,49 @@ class CraeteGameView(LoginRequiredMixin, RefereeMixin, CreateView):
                 )
 
         return HttpResponseRedirect(reverse_lazy('account:profile'))
+
+    
+class GameManagerView(LoginRequiredMixin, RefereeMixin, ListView):
+    model = Game
+    paginate_by = 10
+    template_name = 'account/game_manager.html'
+    context_object_name = 'games'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        referee = Referee.objects.get(user=self.request.user)
+        games = Game.objects.filter(referee=referee).order_by('-starts_at')
+        games_and_status = [
+            (
+                game, 
+                "finished" if iranDateTime(game.starts_at) < iranDateTime(datetime.now()) else "pending"
+            ) for game in games
+        ]
+
+        context['games'] = games_and_status
+        return context
+
+
+class MatchEditView(LoginRequiredMixin, RefereeMixin, UpdateView):
+    model = Game
+    form_class = MatchEditForm
+    template_name = 'account/game_manager.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(MatchEditView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def post(self, request, pk, *args, **kwargs):
+        game = get_object_or_404(Game, pk=pk)
+        form = MatchEditForm(request.POST, instance=game, user=request.user)
+
+        if form.is_valid():
+
+            final_user = form.save(commit=False)
+            final_user.save()
+            return HttpResponseRedirect(reverse_lazy('account:profile'))
+
+        return HttpResponse('Form is not valid') # Edit this later.

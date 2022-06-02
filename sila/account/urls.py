@@ -8,7 +8,9 @@ from account.views import (
     UpdateUserView ,
     TournamentRegisterView ,
     CreateUserView,
-    CraeteGameView
+    CraeteGameView,
+    GameManagerView,
+    MatchEditView
 )
 
 app_name = "account"
@@ -22,6 +24,8 @@ urlpatterns = [
     path("user-control/update-user/<int:pk>", UpdateUserView.as_view(), name="user_update"),
     path("register-user/", CreateUserView.as_view(), name="register_user"),
     path("create-game/", CraeteGameView.as_view(), name="create_game"),
+    path("game-manager/", GameManagerView.as_view(), name="game_manager"),
+    path("game-manager/edit/<int:pk>", MatchEditView.as_view(), name="game_editor"),
     
     # path("user-control/update-user/", UpdateUserView.as_view(), name="update_user"),
     # path("logout/", views.LogoutView.as_view(), name="logout"),

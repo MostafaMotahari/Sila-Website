@@ -1,3 +1,4 @@
+from itertools import count
 from django.db import models
 
 
@@ -116,3 +117,17 @@ class GameImage(models.Model):
 
     def get_game_details(self):
         return self.game.home_team.name + " vs " + self.game.away_team.name
+
+
+class Goal(models.Model):
+    scorer = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='scorer')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0)
+    minute = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = "Goal"
+        verbose_name_plural = "Goals"
+
+    def __str__(self):
+        return self.scorer.username + " scored at " + str(self.minute) + " minutes"

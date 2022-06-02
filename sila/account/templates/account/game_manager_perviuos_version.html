@@ -1,0 +1,479 @@
+{% extends 'account/layouts/master.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block styles %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'account/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'account/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+<!-- BS Stepper -->
+<link rel="stylesheet" href="{% static 'account/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+<!-- dropzonejs -->
+<link rel="stylesheet" href="{% static 'account/plugins/dropzone/min/dropzone.min.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+<!-- Tempusdominus Bbootstrap 4 -->
+<link rel="stylesheet"
+  href="{% static 'account/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'account/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+<style>
+  .scorer-fields {
+    display: none;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="card-footer">
+    <div id="match-detail">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Matches created by you:</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Match</th>
+                    <th>Start time</th>
+                    <th>League</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for game, status in games %}
+                    <tr>
+                      <td>{{game}}</td>
+                      {% if status == "pending" %}
+                        <td><span class="badge bg-warning">{{game.starts_at}}</span></td>
+                      {% else %}
+                        <td><span class="badge bg-success">{{game.starts_at}}</span></td>
+                      {% endif %}
+                      <td>{{game.league}}</td>
+                      <td><a onclick="loadGame({{game.pk}});"><span class="fas fa-arrow-circle-right"></span></a></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <ul class="pagination pagination-sm m-0 float-right">
+                {% if page_obj.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+                <li class="page-item"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                {% if page_obj.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+                {% endif %}
+                </ul>
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Match edit section -->
+
+    <div id="match-edit">
+      {% if form.as_p %}
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <!-- general form elements disabled -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Update match:</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+    
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  
+                  <h5 style="color: rgb(95, 194, 255);">Match details:</h4>
+                  <div class="row">
+                    
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>League:</label>
+                        {{form.league|add_class:"form-control"|attr:"style:width: 100%;"}}
+                      </div>
+                    </div>
+    
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>Home:</label>
+                        {{form.home_team|add_class:"form-control"|attr:"style:width: 100%;"}}
+                      </div>
+                    </div>
+    
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>Away:</label>
+                        {{form.away_team|add_class:"form-control"|attr:"style:width: 100%;"}}
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Referee:</label>
+                        {{form.referee|add_class:"form-control"|attr:"style:width: 100%;"}}
+                      </div>
+                    </div>
+    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Date and time of start:</label>
+                          <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                              {{form.starts_at|add_class:"form-control datetimepicker-input"|attr:"data-target=#reservationdatetime"}}
+                              <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/> -->
+                              <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Scorers section -->
+                  <h5>Home Scorers:</h5>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <!-- <label>Home scorer:</label> -->
+                        {{form.home_scorer_name_1|add_class:"form-control"|attr:"style:width: 100%;"}}
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        {{form.home_scorer_count_1|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Count of goals ..."}}
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        {{form.home_scorer_time_1|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Time in minutes ..."}}
+                      </div>
+                    </div>
+                  </div>
+                    
+                  <div class="row">
+                    {% for field in form %}
+                      {% if "1" not in field.name %}
+                        {% if "home_scorer_name_" in field.name %}
+                          <div class="col-sm-4">
+                            <div class="form-group scorer-fields" id="seprate_{{field.name}}">
+                              <!-- <label>Home scorer:</label> -->
+                              {{field|add_class:"form-control"|attr:"style:width: 100%;"}}
+                            </div>
+                          </div>
+
+                        {% elif "home_scorer_count_" in field.name %}
+                        
+                        <div class="col-sm-4">
+                          <div class="form-group scorer-fields" id="seprate_{{field.name}}">
+                            {{field|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Count of goals ..."}}
+                          </div>
+                        </div>
+                        
+                        {% elif "home_scorer_time_" in field.name %}
+                          
+                          <div class="col-sm-4">
+                            <div class="form-group scorer-fields" id="seprate_{{field.name}}">
+                              {{field|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Time in minutes ..."}}
+                            </div>
+                          </div>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+
+
+                  <h5>Away Scorers:</h5>
+                  
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <!-- <label>Home scorer:</label> -->
+                        {{form.away_scorer_name_1|add_class:"form-control"|attr:"style:width: 100%;"}}
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        {{form.away_scorer_count_1|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Count of goals ..."}}
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        {{form.away_scorer_time_1|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Time in minutes ..."}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    {% for field in form %}
+                      {% if "1" not in field.name %}
+                        {% if "away_scorer_name_" in field.name %}
+                          <div class="col-sm-4">
+                            <div class="form-group scorer-fields" id="seprate_{{field.name}}">
+                              <!-- <label>away scorer:</label> -->
+                              {{field|add_class:"form-control"|attr:"style:width: 100%;"}}
+                            </div>
+                          </div>
+
+                        {% elif "away_scorer_count_" in field.name %}
+
+                          <div class="col-sm-4">
+                            <div class="form-group scorer-fields" id="seprate_{{field.name}}">
+                              {{field|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Count of goals ..."}}
+                            </div>
+                          </div>
+
+                        {% elif "away_scorer_time_" in field.name %}
+                          
+                          <div class="col-sm-4">
+                            <div class="form-group scorer-fields" id="seprate_{{field.name}}">
+                              {{field|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Time in minutes ..."}}
+                            </div>
+                          </div>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+
+                  <div id="buttons">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <button class="btn btn-block btn-success">Update Match</button>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <button class="btn btn-block btn-danger">Delete Match</button>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <button class="btn btn-block btn-info">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+    
+                </form>
+    
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'account/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'account/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'account/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<!-- InputMask -->
+<script src="{% static 'account/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'account/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
+<!-- bootstrap color picker -->
+<script src="{% static 'account/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+
+<script src="{% static 'account/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<!-- Custom JS -->
+<script src="{% static 'account/dist/js/select_user.js' %}"></script>
+<!-- Bootstrap Switch -->
+<script src="{% static 'account/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<script>
+  // Custom Js
+
+  // Local vars
+  let homeIsFilledList = [false, false, false, false, false, false, false, false]
+  let awayIsFilledList = [false, false, false, false, false, false, false, false]
+  let homeIsFilledFirstTimeList = [true, true, true, true, true, true, true, true]
+  let awayIsFilledFirstTimeList = [true, true, true, true, true, true, true, true]
+  
+  // Load match edit form
+  function loadGame(gamePk) {
+    // Add listener function to the select box
+    function addListener(selector, next_selectors) {
+      var isFilled = null;
+      var isFillingFirstTime = null;
+      var primaryKey = selector.id.charAt(selector.id.length - 1)
+      var selectorType = null
+
+      if (selector.id.includes("home")){
+
+        selectorType = "home"
+        isFilled = homeIsFilledList[primaryKey - 1]
+        isFillingFirstTime = homeIsFilledFirstTimeList[primaryKey - 1]
+        
+      } else {
+
+        selectorType = "away"
+        isFilled = awayIsFilledList[primaryKey - 1]
+        isFillingFirstTime = awayIsFilledFirstTimeList[primaryKey - 1]
+
+      }
+
+      // Listener
+      selector.addEventListener("input", function(event) {
+
+        if (isFilled == false) {
+
+          if(selector.value.length >= 1 && isFillingFirstTime == true) {
+
+            if (selectorType == "home"){
+
+              homeIsFilledList[primaryKey - 1] = true;
+              homeIsFilledFirstTimeList[primaryKey - 1] = false;
+              
+            } else {
+              
+              awayIsFilledList[primaryKey - 1] = true;
+              awayIsFilledFirstTimeList[primaryKey - 1] = false;
+              
+            }
+            
+            isFilled = true;
+            isFillingFirstTime = false;
+            
+            for(let i=0; i<next_selectors.length; i++) {
+              next_selectors[i].style.display = "block";
+            }
+            
+          }
+
+
+        } else if (selector.value.length == 0) {
+
+          if (selectorType == "home"){
+
+            homeIsFilledList[primaryKey - 1] = false;
+            homeIsFilledFirstTimeList[primaryKey - 1] = true;
+
+          } else {
+
+            awayIsFilledList[primaryKey - 1] = false;
+            awayIsFilledFirstTimeList[primaryKey - 1] = true;
+
+          }
+
+          isFilled = false;
+          isFillingFirstTime = true;
+          counter = parseInt(primaryKey) + 1
+
+          // Hide all after fields and delete all values
+          if (selectorType == "home"){
+            for (let i=counter; i<8; i++){
+              document.getElementById("seprate_home_scorer_name_" + i).style.display = "none";
+              document.getElementById("seprate_home_scorer_count_" + i).style.display = "none";
+              document.getElementById("seprate_home_scorer_time_" + i).style.display = "none";
+              homeFilledField = document.getElementById("home_scorer_count_" + i)
+              if (homeFilledField.value.length > 0){
+                homeFilledField.value = ""
+              }
+            }
+          } else {
+            for (let i=counter; i<8; i++){
+              document.getElementById("seprate_away_scorer_name_" + i).style.display = "none";
+              document.getElementById("seprate_away_scorer_count_" + i).style.display = "none";
+              document.getElementById("seprate_away_scorer_time_" + i).style.display = "none";
+              awayFilledField = document.getElementById("away_scorer_count_" + i)
+              if (awayFilledField.value.length > 0){
+                awayFilledField.value = '';
+              }
+            }
+          }
+        }
+      })
+    }
+    
+
+    // Show the edit form
+    $.ajax({
+        url: '/account/game-manager/edit/' + gamePk,
+        type: 'GET',
+        success: function (data) {
+
+          // Handle the response
+          $("#match-edit").html(strToHTML(data).getElementById("match-edit").innerHTML);
+          document.getElementById("match-detail").style.display = 'none';
+
+          // Add listeners
+          let listenersList = [
+            ["seprate_home_scorer_name_1", "seprate_home_scorer_count_1", "home_scorer_count_1", "seprate_home_scorer_time_1"],
+            ["seprate_home_scorer_name_2", "seprate_home_scorer_count_2", "home_scorer_count_2", "seprate_home_scorer_time_2"],
+            ["seprate_home_scorer_name_3", "seprate_home_scorer_count_3", "home_scorer_count_3", "seprate_home_scorer_time_3"],
+            ["seprate_home_scorer_name_4", "seprate_home_scorer_count_4", "home_scorer_count_4", "seprate_home_scorer_time_4"],
+            ["seprate_home_scorer_name_5", "seprate_home_scorer_count_5", "home_scorer_count_5", "seprate_home_scorer_time_5"],
+            ["seprate_home_scorer_name_6", "seprate_home_scorer_count_6", "home_scorer_count_6", "seprate_home_scorer_time_6"],
+            ["seprate_home_scorer_name_7", "seprate_home_scorer_count_7", "home_scorer_count_7", "seprate_home_scorer_time_7"],
+            ["seprate_home_scorer_name_8", "seprate_home_scorer_count_8", "home_scorer_count_8", "seprate_home_scorer_time_8"],
+
+            ["seprate_away_scorer_name_1", "seprate_away_scorer_count_1", "away_scorer_count_1", "seprate_away_scorer_time_1"],
+            ["seprate_away_scorer_name_2", "seprate_away_scorer_count_2", "away_scorer_count_2", "seprate_away_scorer_time_2"],
+            ["seprate_away_scorer_name_3", "seprate_away_scorer_count_3", "away_scorer_count_3", "seprate_away_scorer_time_3"],
+            ["seprate_away_scorer_name_4", "seprate_away_scorer_count_4", "away_scorer_count_4", "seprate_away_scorer_time_4"],
+            ["seprate_away_scorer_name_5", "seprate_away_scorer_count_5", "away_scorer_count_5", "seprate_away_scorer_time_5"],
+            ["seprate_away_scorer_name_6", "seprate_away_scorer_count_6", "away_scorer_count_6", "seprate_away_scorer_time_6"],
+            ["seprate_away_scorer_name_7", "seprate_away_scorer_count_7", "away_scorer_count_7", "seprate_away_scorer_time_7"],
+            ["seprate_away_scorer_name_8", "seprate_away_scorer_count_8", "away_scorer_count_8", "seprate_away_scorer_time_8"]
+          ];
+
+          for(let i=0; i<listenersList.length; i++) {
+            if (i != 7 && i != 15) {
+
+              selector = document.getElementById(listenersList[i][2]);
+              next_selector_one = document.getElementById(listenersList[i+1][0]);
+              next_selector_one_display_mode = document.getElementById(listenersList[i+1][1]);
+              next_selector_two = document.getElementById(listenersList[i+1][2]);
+              next_selector_three = document.getElementById(listenersList[i+1][3]);
+
+              addListener(selector, [
+                next_selector_one,
+                next_selector_one_display_mode,
+                next_selector_two,
+                next_selector_three,
+              ]);
+
+            }
+
+          }
+
+        }
+      }
+    );
+  }
+
+  // Convert str to html
+  function strToHTML(str) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(str, "text/html");
+    return doc;
+  }
+
+</script>
+{% endblock %}

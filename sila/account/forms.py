@@ -2,6 +2,7 @@ from account.models import Report, User, Referee, Reporter
 from league.models import Game, GameImage
 from django import forms
 import datetime
+import itertools
 
 
 # Forms
@@ -212,3 +213,68 @@ class CreateGameForm(forms.ModelForm):
             # Disable fields
             self.fields['referee'].disabled = True
 
+
+class MatchEditForm(forms.ModelForm):
+
+    class Meta:
+        model = Game
+        fields = [
+            "tournament",
+            "league",
+            "home_team",
+            "away_team",
+            "home_scores",
+            "away_scores",
+            "starts_at",
+            "referee",
+        ]
+
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(MatchEditForm, self).__init__(*args, **kwargs)
+
+        if not user.is_admin:
+            # Disable fields
+            self.fields['referee'].disabled = True
+
+        # Add scorers to form
+        for i in range(1,9):
+            self.fields[f'scorer_name_{i}'] = forms.ChoiceField(
+                choices=list(itertools.chain(
+                    (('0', '---------'),),
+                    User.objects.filter(team=self.instance.home_team).values_list('id', 'username'),
+                    User.objects.filter(team=self.instance.away_team).values_list('id', 'username'),
+                )),
+                required=False
+            )
+            self.fields[f'scorer_count_{i}'] = forms.IntegerField(widget=forms.TextInput(attrs={"id": f"scorer_count_{i}"}), required=False)
+            self.fields[f'scorer_time_{i}'] = forms.IntegerField(required=False)
+        
+        # Set referee field manually
+        self.fields['referee'] = forms.ChoiceField(choices=User.objects.filter(is_referee=True).values_list('id', 'username'), required=True)
+
+    def clean(self):
+        cleaned_data = super(MatchEditForm, self).clean()
+        # Apply football rules
+        self.record_details()
+
+        return cleaned_data
+
+
+    def record_details(self):
+        # Record all scorers
+        for i in range(1, 9):
+            print(type(self.cleaned_data[f'scorer_name_{i}']))
+            if self.cleaned_data[f'scorer_name_{i}'] != "0":
+                scorer = User.objects.get(id=self.cleaned_data[f'scorer_name_{i}'])
+                scorer.total_goals += self.cleaned_data[f'scorer_count_{i}']
+                scorer.season_goals += self.cleaned_data[f'scorer_count_{i}']
+                scorer.played_games += 1
+                scorer.save()
+
+        # Register referee details
+        refree = Referee.objects.get(user=User.objects.get(id=self.cleaned_data['referee']))
+        self.cleaned_data['referee'] = refree
+        refree.experience += 1
+        refree.save()
