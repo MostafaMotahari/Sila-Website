@@ -49,16 +49,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for game, status in games %}
+                  {% for match, status in matchs %}
                     <tr>
-                      <td>{{game}}</td>
+                      <td>{{match}}</td>
                       {% if status == "pending" %}
-                        <td><span class="badge bg-warning">{{game.starts_at}}</span></td>
+                        <td><span class="badge bg-warning">{{match.starts_at}}</span></td>
                       {% else %}
-                        <td><span class="badge bg-success">{{game.starts_at}}</span></td>
+                        <td><span class="badge bg-success">{{match.starts_at}}</span></td>
                       {% endif %}
-                      <td>{{game.league}}</td>
-                      <td><a onclick="loadGame({{game.pk}});"><span class="fas fa-arrow-circle-right"></span></a></td>
+                      <td>{{match.league}}</td>
+                      <td><a onclick="loadMatch({{match.pk}});"><span class="fas fa-arrow-circle-right"></span></a></td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -96,7 +96,7 @@
               <!-- /.card-header -->
               <div class="card-body">
     
-                <form method="post" enctype="multipart/form-data" action="{% url 'account:game_editor' request.resolver_match.kwargs.pk %}">
+                <form method="post" enctype="multipart/form-data" action="{% url 'account:match_editor' request.resolver_match.kwargs.pk %}">
                   {% csrf_token %}
                   
                   <h5 style="color: rgb(95, 194, 255);">Match details:</h4>
@@ -221,7 +221,7 @@
 <!-- bootstrap color picker -->
 <script src="{% static 'account/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
 <!-- Custom JS -->
-<script src="{% static 'account/dist/js/game_manager.js' %}"></script>
+<script src="{% static 'account/dist/js/match_manager.js' %}"></script>
 <!-- Bulma Calendar -->
 <script src="{% static 'account/plugins/bulma-calendar/dist/js/bulma-calendar.min.js' %}"></script>
 <!-- Bootstrap Switch -->

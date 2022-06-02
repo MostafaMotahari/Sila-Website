@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, Ht
 from django.views.generic import ListView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from league.models import Game, Team, Tournament, GameImage, League
+from league.models import Match, Team, Tournament, MatchImage, League
 from account.models import User, Referee
-from account.forms import UpdateUserForm, CreateUserForm, CreateGameForm, MatchEditForm
+from account.forms import UpdateUserForm, CreateUserForm, CreateMatchForm, MatchEditForm
 from account.mixins import AdminMixin, TopLevelAdminMixin, RefereeMixin
 from account.utilities import iranDateTime
 
@@ -87,19 +87,19 @@ class CreateUserView(LoginRequiredMixin, TopLevelAdminMixin, CreateView):
         return kwargs
 
 
-class CraeteGameView(LoginRequiredMixin, RefereeMixin, CreateView):
-    model = Game
-    form_class = CreateGameForm
-    template_name = 'account/create_game.html'
+class CraeteMatchView(LoginRequiredMixin, RefereeMixin, CreateView):
+    model = Match
+    form_class = CreateMatchForm
+    template_name = 'account/create_match.html'
 
     def get_form_kwargs(self):
-        kwargs = super(CraeteGameView, self).get_form_kwargs()
+        kwargs = super(CraeteMatchView, self).get_form_kwargs()
         kwargs.update({'user': self.request.user})
         return kwargs
 
     def post(self, request, *args, **kwargs):
-        # Create new game
-        new_game = Game.objects.create(
+        # Create new match
+        new_match = Match.objects.create(
             league = League.objects.get(pk=request.POST['league']),
             home_team = Team.objects.get(pk=request.POST['home_team']),
             away_team = Team.objects.get(pk=request.POST['away_team']),
@@ -109,47 +109,47 @@ class CraeteGameView(LoginRequiredMixin, RefereeMixin, CreateView):
 
         print(request.POST['starts_at'])
 
-        # Get game images and save them to the database
+        # Get match images and save them to the database
         images = [(tipic_name, img) for tipic_name, img in request.FILES.items()]
         post_items = {tipic_name:value for tipic_name, value in request.POST.items()}
 
 
         for tipic_name, img in images:
             if "speed" in tipic_name:
-                GameImage.objects.create(
-                    game = new_game,
+                MatchImage.objects.create(
+                    match = new_match,
                     image = img,
                     name = post_items[tipic_name + "_name"],
                     type = "speed",
                 )
 
             elif "power" in tipic_name:
-                GameImage.objects.create(
-                    game = new_game,
+                MatchImage.objects.create(
+                    match = new_match,
                     image = img,
                     name = post_items[tipic_name + "_name"],
                     type = "power",
                 )
 
             elif "info" in tipic_name:
-                GameImage.objects.create(
-                    game = new_game,
+                MatchImage.objects.create(
+                    match = new_match,
                     image = img,
                     name = post_items[tipic_name + "_name"],
                     type = "info",
                 )
 
             elif "legend" in tipic_name:
-                GameImage.objects.create(
-                    game = new_game,
+                MatchImage.objects.create(
+                    match = new_match,
                     image = img,
                     name = post_items[tipic_name + "_name"],
                     type = "legend",
                 )
 
             else:
-                GameImage.objects.create(
-                    game = new_game,
+                MatchImage.objects.create(
+                    match = new_match,
                     image = img,
                     name = post_items[tipic_name + "_name"],
                     type = "search",
@@ -158,33 +158,33 @@ class CraeteGameView(LoginRequiredMixin, RefereeMixin, CreateView):
         return HttpResponseRedirect(reverse_lazy('account:profile'))
 
     
-class GameManagerView(LoginRequiredMixin, RefereeMixin, ListView):
-    model = Game
+class MatchManagerView(LoginRequiredMixin, RefereeMixin, ListView):
+    model = Match
     paginate_by = 10
-    template_name = 'account/game_manager.html'
-    context_object_name = 'games'
+    template_name = 'account/match_manager.html'
+    context_object_name = 'matchs'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         referee = Referee.objects.get(user=self.request.user)
-        games = Game.objects.filter(referee=referee).order_by('-starts_at')
-        games_and_status = [
+        matchs = Match.objects.filter(referee=referee).order_by('-starts_at')
+        matchs_and_status = [
             (
-                game, 
-                "finished" if iranDateTime(game.starts_at) < iranDateTime(datetime.now()) else "pending"
-            ) for game in games
+                match, 
+                "finished" if iranDateTime(match.starts_at) < iranDateTime(datetime.now()) else "pending"
+            ) for match in matchs
         ]
 
-        context['games'] = games_and_status
+        context['matchs'] = matchs_and_status
         return context
 
 
 class MatchEditView(LoginRequiredMixin, RefereeMixin, UpdateView):
-    model = Game
+    model = Match
     form_class = MatchEditForm
-    template_name = 'account/game_manager.html'
+    template_name = 'account/match_manager.html'
 
     def get_form_kwargs(self):
         kwargs = super(MatchEditView, self).get_form_kwargs()
@@ -192,8 +192,8 @@ class MatchEditView(LoginRequiredMixin, RefereeMixin, UpdateView):
         return kwargs
 
     def post(self, request, pk, *args, **kwargs):
-        game = get_object_or_404(Game, pk=pk)
-        form = MatchEditForm(request.POST, instance=game, user=request.user)
+        match = get_object_or_404(Match, pk=pk)
+        form = MatchEditForm(request.POST, instance=match, user=request.user)
 
         if form.is_valid():
 

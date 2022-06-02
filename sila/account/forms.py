@@ -1,5 +1,5 @@
 from account.models import Report, User, Referee, Reporter
-from league.models import Game, GameImage
+from league.models import Match, MatchImage
 from django import forms
 import datetime
 import itertools
@@ -31,7 +31,7 @@ class UpdateUserForm(forms.ModelForm):
             "red_cards",
             "yellow_cards",
             "season_goals",
-            "played_games",
+            "played_matchs",
             "team",
             # "trophies",
             "total_goals",
@@ -140,11 +140,11 @@ class CreateUserForm(forms.ModelForm):
             self.fields['is_admin'].disabled = True
             self.fields['admin_level'].disabled = True
 
-# A form for creating new games
-class CreateGameForm(forms.ModelForm):
+# A form for creating new matchs
+class CreateMatchForm(forms.ModelForm):
 
     # Additional fields
-    # Speed imgs of game
+    # Speed imgs of match
     speed_img_one = forms.ImageField(required=False)
     speed_img_one_name = forms.CharField(required=False)
     speed_img_two = forms.ImageField(required=False)
@@ -154,7 +154,7 @@ class CreateGameForm(forms.ModelForm):
     speed_img_four = forms.ImageField(required=False)
     speed_img_four_name = forms.CharField(required=False)
 
-    # Info imgs of game
+    # Info imgs of match
     info_img_one = forms.ImageField(required=False)
     info_img_one_name = forms.CharField(required=False)
     info_img_two = forms.ImageField(required=False)
@@ -164,7 +164,7 @@ class CreateGameForm(forms.ModelForm):
     info_img_four = forms.ImageField(required=False)
     info_img_four_name = forms.CharField(required=False)
 
-    # Power imgs of game
+    # Power imgs of match
     power_img_one = forms.ImageField(required=False)
     power_img_one_name = forms.CharField(required=False)
     power_img_two = forms.ImageField(required=False)
@@ -174,7 +174,7 @@ class CreateGameForm(forms.ModelForm):
     power_img_four = forms.ImageField(required=False)
     power_img_four_name = forms.CharField(required=False)
 
-    # Legend imgs of game
+    # Legend imgs of match
     legend_img_one = forms.ImageField(required=False)
     legend_img_one_name = forms.CharField(required=False)
     legend_img_two = forms.ImageField(required=False)
@@ -184,7 +184,7 @@ class CreateGameForm(forms.ModelForm):
     legend_img_four = forms.ImageField(required=False)
     legend_img_four_name = forms.CharField(required=False)
 
-    # Search imgs of game
+    # Search imgs of match
     search_img_one = forms.ImageField(required=False)
     search_img_one_name = forms.CharField(required=False)
     search_img_two = forms.ImageField(required=False)
@@ -195,7 +195,7 @@ class CreateGameForm(forms.ModelForm):
     search_img_four_name = forms.CharField(required=False)
 
     class Meta:
-        model = Game
+        model = Match
         fields = [
             "league",
             "home_team",
@@ -207,7 +207,7 @@ class CreateGameForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
-        super(CreateGameForm, self).__init__(*args, **kwargs)
+        super(CreateMatchForm, self).__init__(*args, **kwargs)
 
         if not user.is_admin:
             # Disable fields
@@ -217,7 +217,7 @@ class CreateGameForm(forms.ModelForm):
 class MatchEditForm(forms.ModelForm):
 
     class Meta:
-        model = Game
+        model = Match
         fields = [
             "tournament",
             "league",
@@ -270,7 +270,7 @@ class MatchEditForm(forms.ModelForm):
                 scorer = User.objects.get(id=self.cleaned_data[f'scorer_name_{i}'])
                 scorer.total_goals += self.cleaned_data[f'scorer_count_{i}']
                 scorer.season_goals += self.cleaned_data[f'scorer_count_{i}']
-                scorer.played_games += 1
+                scorer.played_matchs += 1
                 scorer.save()
 
         # Register referee details

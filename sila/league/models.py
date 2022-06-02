@@ -20,17 +20,17 @@ class League(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
-    league = models.ForeignKey(League, on_delete=models.CASCADE)
+    league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='league_teams')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     logo = models.ImageField(upload_to='images/team_logos/', blank=True)
     budget = models.IntegerField(default=0)
-    captain = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='captain')
+    captain = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='captain_of')
     points = models.IntegerField(default=0)
     wins = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
-    transfers_in = models.ManyToManyField("account.User", null=True, blank=True, related_name='transfers_in')
-    transfers_out = models.ManyToManyField("account.User", null=True, blank=True, related_name='transfers_out')
+    transfers_in = models.ManyToManyField("account.User", null=True, blank=True, related_name='transferred_in')
+    transfers_out = models.ManyToManyField("account.User", null=True, blank=True, related_name='transferred_out')
     due_amount = models.IntegerField(default=0)
 
     class Meta:
@@ -42,9 +42,9 @@ class Team(models.Model):
 
 
 class Transfers(models.Model):
-    came_in = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='came_in')
-    came_out = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='came_out')
-    player = models.ForeignKey("account.User", on_delete=models.CASCADE)
+    came_in = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='came_in_transfers')
+    came_out = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='came_out_transfers')
+    player = models.ForeignKey("account.User", on_delete=models.CASCADE, related_name='user_transfers')
     amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     time_of_expire = models.DateTimeField(auto_now_add=True, null=True)
@@ -56,7 +56,7 @@ class Transfers(models.Model):
 
 class Trophy(models.Model):
     name = models.CharField(max_length=255)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='trophies')
     obtained_at = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
@@ -72,10 +72,10 @@ class Tournament(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     start_at = models.DateTimeField(auto_now_add=True, null=True)
     end_at = models.DateTimeField(auto_now_add=True, null=True)
-    referee = models.OneToOneField("account.Referee", on_delete=models.SET_NULL, null=True, blank=True, related_name='referee')
+    referee = models.ForeignKey("account.Referee", on_delete=models.SET_NULL, null=True, blank=True, related_name='referee_tournaments')
     is_active = models.BooleanField(default=False)
-    winner = models.OneToOneField("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='winner')
-    participants = models.ManyToManyField("account.User", null=True, blank=True, related_name='participants')
+    winner = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='won_tournaments')
+    participants = models.ManyToManyField("account.User", null=True, blank=True, related_name='participanted_tournaments')
 
     class Meta:
         verbose_name = "Tournament"
@@ -85,43 +85,43 @@ class Tournament(models.Model):
         return self.name
 
 
-class Game(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True, blank=True)
-    league = models.ForeignKey(League, on_delete=models.CASCADE, null=True, blank=True)
-    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home')
-    away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away')
-    home_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='home_scores')
-    away_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='away_scores')
+class Match(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True, blank=True, related_name='tournament_matches')
+    league = models.ForeignKey(League, on_delete=models.CASCADE, null=True, blank=True, related_name='league_mathces')
+    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
+    away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
+    home_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='home_goals')
+    away_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='away_goals')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     starts_at = models.DateTimeField(auto_now_add=False, null=True)
-    referee = models.ForeignKey("account.Referee", on_delete=models.SET_NULL, null=True, blank=True)
+    referee = models.ForeignKey("account.Referee", on_delete=models.SET_NULL, null=True, blank=True, related_name="referee_matches")
 
 
     class Meta:
-        verbose_name = "Game"
-        verbose_name_plural = "Games"
+        verbose_name = "Match"
+        verbose_name_plural = "Matchs"
 
     def __str__(self):
         return self.home_team.name + " vs " + self.away_team.name
 
 # Images
-class GameImage(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+class MatchImage(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='match_images')
     name = models.CharField(max_length=255, blank=True)
-    image = models.ImageField(upload_to='images/game_pics/')
+    image = models.ImageField(upload_to='images/match_pics/')
     type = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = "GameImage"
-        verbose_name_plural = "GameImages"
+        verbose_name = "MatchImage"
+        verbose_name_plural = "MatchImages"
 
-    def get_game_details(self):
-        return self.game.home_team.name + " vs " + self.game.away_team.name
+    def get_match_details(self):
+        return self.match.home_team.name + " vs " + self.match.away_team.name
 
 
 class Goal(models.Model):
-    scorer = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='scorer')
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    scorer = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='user_goals')
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name="match_goals")
     count = models.IntegerField(default=0)
     minute = models.IntegerField(default=0)
 

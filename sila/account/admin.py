@@ -28,7 +28,7 @@ UserAdmin.fieldsets += (
         "red_cards" ,
         "yellow_cards" ,
         "season_goals" ,
-        "played_games" ,
+        "played_matchs" ,
         "team" ,
         "trophies" ,
         "total_goals" ,

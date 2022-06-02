@@ -22,8 +22,8 @@ class User(AbstractUser):
     red_cards = models.IntegerField(default=0, verbose_name="Red Cards")
     yellow_cards = models.IntegerField(default=0, verbose_name="Yellow Cards")
     season_goals = models.IntegerField(default=0, verbose_name="Goals")
-    played_games = models.IntegerField(default=0, verbose_name="Played Games")
-    team = models.ForeignKey("league.Team", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Team")
+    played_matchs = models.IntegerField(default=0, verbose_name="Played Matchs")
+    team = models.ForeignKey("league.Team", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Team", related_name="team_players")
     trophies = models.ManyToManyField("league.Trophy", blank=True, verbose_name="Trophies")
     total_goals = models.IntegerField(default=0, verbose_name="Total Goals")
     overall_rating = models.IntegerField(default=0, verbose_name="Overall Rating")
@@ -48,7 +48,7 @@ class User(AbstractUser):
 
 
 class Referee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Referee")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="referee_user")
     level = models.IntegerField(default=0, verbose_name="Level")
     experience = models.IntegerField(default=0, verbose_name="Experience")
     level_up_date = models.DateTimeField(blank=True, null=True, verbose_name="Level Up Date")
@@ -62,7 +62,7 @@ class Referee(models.Model):
 
 
 class Reporter(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Reporter")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="reporter_user")
     level = models.IntegerField(default=0, verbose_name="Level")
     experience = models.IntegerField(default=0, verbose_name="Experience")
     level_up_date = models.DateTimeField(blank=True, null=True, verbose_name="Level Up Date")
@@ -78,7 +78,7 @@ class Reporter(models.Model):
 class Report(models.Model):
     report_date = models.DateTimeField(blank=True, null=True, verbose_name="Report Date")
     report_text = models.TextField(blank=True, verbose_name="Report Text")
-    reporter_object = models.ForeignKey(Reporter, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Reporter")
+    reporter_object = models.ForeignKey(Reporter, on_delete=models.CASCADE, blank=True, null=True, verbose_name="reports")
 
     class Meta:
         verbose_name = "Report"

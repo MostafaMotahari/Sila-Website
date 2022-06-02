@@ -49,16 +49,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for game, status in games %}
+                  {% for match, status in matchs %}
                     <tr>
-                      <td>{{game}}</td>
+                      <td>{{match}}</td>
                       {% if status == "pending" %}
-                        <td><span class="badge bg-warning">{{game.starts_at}}</span></td>
+                        <td><span class="badge bg-warning">{{match.starts_at}}</span></td>
                       {% else %}
-                        <td><span class="badge bg-success">{{game.starts_at}}</span></td>
+                        <td><span class="badge bg-success">{{match.starts_at}}</span></td>
                       {% endif %}
-                      <td>{{game.league}}</td>
-                      <td><a onclick="loadGame({{game.pk}});"><span class="fas fa-arrow-circle-right"></span></a></td>
+                      <td>{{match.league}}</td>
+                      <td><a onclick="loadMatch({{match.pk}});"><span class="fas fa-arrow-circle-right"></span></a></td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -316,7 +316,7 @@
   let awayIsFilledFirstTimeList = [true, true, true, true, true, true, true, true]
   
   // Load match edit form
-  function loadGame(gamePk) {
+  function loadMatch(matchPk) {
     // Add listener function to the select box
     function addListener(selector, next_selectors) {
       var isFilled = null;
@@ -414,7 +414,7 @@
 
     // Show the edit form
     $.ajax({
-        url: '/account/game-manager/edit/' + gamePk,
+        url: '/account/match-manager/edit/' + matchPk,
         type: 'GET',
         success: function (data) {
 
