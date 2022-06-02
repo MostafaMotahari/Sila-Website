@@ -17,57 +17,41 @@
 <link rel="stylesheet" href="{% static 'account/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
 <!-- Tempusdominus Bbootstrap 4 -->
 <link rel="stylesheet" href="{% static 'account/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<!-- Bulma Calendar -->
+<link rel="stylesheet" href="{% static 'account/plugins/bulma-calendar/dist/css/bulma-calendar.min.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="content-wrapper">
   <div class="card-footer">
-    <div class="row">
-      <div class="col-12 col-sm-12">
+    <div id="select-user">
+      <div class="row">
+        <div class="col-12 col-sm-12">
 
 
-        <div class="card card-warning">
-          <div class="card-header">
-            <h3 class="card-title">Select Target User:</h3>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <select id="user-list" class="form-control select2 select2-danger"
-                data-dropdown-css-class="select2-danger" style="width: 100%;">
-                <option selected="selected">--Select--</option>
-                {% for user in users %}
-                <option>{{user.pk}}: {{user.get_full_name}}</option>
-                {% endfor %}
-              </select>
+          <div class="card card-warning">
+            <div class="card-header">
+              <h3 class="card-title">Select Target User:</h3>
             </div>
-            <button type="button" class="btn btn-block btn-primary" onclick="loadUser();">Get User</button>
-            <!-- /.form-group -->
+            <div class="card-body">
+              <div class="form-group">
+                <select id="user-list" class="form-control select2 select2-danger"
+                  data-dropdown-css-class="select2-danger" style="width: 100%;">
+                  <option selected="selected">--Select--</option>
+                  {% for user in users %}
+                  <option>{{user.pk}}: {{user.get_full_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <button type="button" class="btn btn-block btn-primary" onclick="loadUser();">Get User</button>
+              <!-- /.form-group -->
+            </div>
           </div>
-        </div>
 
+
+        </div>
 
       </div>
-
-      <!-- <div class="col-12 col-sm-6">
-        <div class="card card-warning">
-          <div class="card-header">
-            <h3 class="card-title">Select Target User:</h3>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <select id="user-list" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
-                <option selected="selected">--Select--</option>
-                {% for user in users %}
-                  <option>{{user.pk}}: {{user.get_full_name}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <button type="button" class="btn btn-block btn-primary" onclick="loadUser();">Get User</button>
-          </div>
-        </div>
-      </div> -->
-
-
     </div>
     <div id="infos">
     {% if form.as_p %}
@@ -157,13 +141,7 @@
 
                   <div class="form-group">
                     <label>Ban Date:</label>
-                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                      {{form.banned_date|add_class:"form-control datetimepicker-input"|attr:"data-target:#reservationdate"}}
-                      <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/> -->
-                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                        <div class="input-group-text" onclick=""><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
+                    {{form.banned_date|add_class:"form-control input bulmaCalendar"|attr:"type:date"|attr:"data-color:info"}}
                   </div>
                   
                   <!-- textarea -->
@@ -185,13 +163,8 @@
                   
                   <div class="form-group">
                     <label>Deprive Date:</label>
-                    <div class="input-group date" id="reservationdate2" data-target-input="nearest">
-                      {{form.deprived_date|add_class:"form-control datetimepicker-input"|attr:"data-target:#reservationdate2"}}
+                      {{form.deprived_date|add_class:"form-control input bulmaCalendar"|attr:"type:date"|attr:"data-color:info"}}
                       <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2"/> -->
-                      <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
-                        <div class="input-group-text" onclick=""><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
                   </div>
                   
                   <div class="form-group">
@@ -318,7 +291,15 @@
 
               <div class="row">
                 <div class="col-sm-4">
-                  <button class="btn btn-block btn-success btn-lg">Update</button>
+                  <div class="form-group">
+                    <button class="btn btn-block btn-success btn-lg">Update</button>
+                  </div>
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <button class="btn btn-block btn-danger btn-lg" onclick="cancelUpdateUser();">Cancel</button>
+                  </div>
                 </div>
               </div>
 
@@ -351,4 +332,6 @@
 <script src="{% static 'account/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 <!-- Custom JS -->
 <script src="{% static 'account/dist/js/select_user.js' %}"></script>
+<!-- Bulma Calendar -->
+<script src="{% static 'account/plugins/bulma-calendar/dist/js/bulma-calendar.min.js' %}"></script>
 {% endblock %}
