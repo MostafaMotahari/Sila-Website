@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'api.apps.ApiConfig',
     'account.apps.AccountConfig',
     'league.apps.LeagueConfig',
+
     'widget_tweaks',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
