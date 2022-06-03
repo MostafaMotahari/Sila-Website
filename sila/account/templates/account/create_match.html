@@ -9,16 +9,13 @@
 <link rel="stylesheet" href="{% static 'account/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 <!-- Bootstrap4 Duallistbox -->
 <link rel="stylesheet" href="{% static 'account/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
-<!-- BS Stepper -->
-<link rel="stylesheet" href="{% static 'account/plugins/bs-stepper/css/bs-stepper.min.css' %}">
-<!-- dropzonejs -->
-<link rel="stylesheet" href="{% static 'account/plugins/dropzone/min/dropzone.min.css' %}">
 <!-- Bootstrap Color Picker -->
 <link rel="stylesheet" href="{% static 'account/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
-<!-- Tempusdominus Bbootstrap 4 -->
 <link rel="stylesheet" href="{% static 'account/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet" href="{% static 'account/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+<!-- Datetime Picker -->
+<link rel="stylesheet" href="{% static 'account/plugins/datetime-picker/build/css/bootstrap-datetimepicker.min.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -73,13 +70,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label>Date and time of start:</label>
-                      <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                          {{form.starts_at|add_class:"form-control datetimepicker-input"|attr:"data-target=#reservationdatetime"}}
-                          <!-- <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/> -->
-                          <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                          </div>
-                      </div>
+                    {{form.starts_at|add_class:"form-control"|attr:"type:text"|attr:"id:datetimepicker1"}}
                   </div>
                 </div>
               </div>
@@ -605,6 +596,7 @@
 {% endblock %}
 
 {% block js %}
+<!-- Jquery -->
 <script src="{% static 'account/plugins/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'account/plugins/select2/js/select2.full.min.js' %}"></script>
 <!-- Bootstrap4 Duallistbox -->
@@ -614,12 +606,10 @@
 <script src="{% static 'account/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
 <!-- bootstrap color picker -->
 <script src="{% static 'account/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="{% static 'account/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
-<!-- Custom JS -->
-<script src="{% static 'account/dist/js/select_user.js' %}"></script>
-<!-- Bootstrap Switch -->
-<script src="{% static 'account/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<!-- Boostrap -->
+<script src="{% static 'account/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- Datetime Picker -->
+<script type="text/javascript" src="{% static 'account/plugins/datetime-picker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
 
 <script>
   speedPicsCheckBox = document.getElementById('speedPicsEnabledCheck');
@@ -644,6 +634,14 @@
       document.getElementById(elementId).style.display = 'none';
     }
   }
-    
+
+  
+  $(function () {
+      $('#datetimepicker1').datetimepicker({
+        format : "YYYY-MM-DD HH:mm",
+      });
+  });
+
+
 </script>
 {% endblock %}

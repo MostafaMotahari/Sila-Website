@@ -91,11 +91,9 @@ class UpdateUserForm(forms.ModelForm):
     def referee_object_controler(self):
         # Control referees
         if self.cleaned_data['is_referee'] and not self.instance.is_referee:
-            print("referee added")
             Referee.objects.create(user=self.instance)
         
         elif not self.cleaned_data['is_referee'] and self.instance.is_referee:
-            print("referee deleted")
             Referee.objects.get(user=self.instance).delete()
 
     # Check if user is reporter

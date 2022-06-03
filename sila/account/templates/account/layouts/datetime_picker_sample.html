@@ -1,0 +1,20 @@
+Css must be included
+<!-- Datetime Picker -->
+<link rel="stylesheet" href="{% static 'account/plugins/datetime-picker/build/css/bootstrap-datetimepicker.min.css' %}" />
+
+{{form.starts_at|add_class:"form-control"|attr:"type:text"|attr:"id:datetimepicker1"}}
+
+Scripts must be included
+<!-- Boostrap -->
+<script src="{% static 'account/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- Datetime Picker -->
+<script type="text/javascript" src="{% static 'account/plugins/datetime-picker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+Custom script
+// Set Calendars
+$(function () {
+    $('#datetimepicker1').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm'
+    });
+    $('#datetimepicker2').datetimepicker();
+});
