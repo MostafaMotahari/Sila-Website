@@ -100,11 +100,9 @@ class UpdateUserForm(forms.ModelForm):
     def reporter_object_controler(self):
         # Control reporters
         if self.cleaned_data['is_reporter'] and not self.instance.is_reporter:
-            print("reporter added")
             Reporter.objects.create(user=self.instance)
         
         elif not self.cleaned_data['is_reporter'] and self.instance.is_reporter:
-            print("reporter deleted")
             Reporter.objects.get(user=self.instance).delete()
 
 # A form for creating new users
@@ -263,7 +261,6 @@ class MatchEditForm(forms.ModelForm):
     def record_details(self):
         # Record all scorers
         for i in range(1, 9):
-            print(type(self.cleaned_data[f'scorer_name_{i}']))
             if self.cleaned_data[f'scorer_name_{i}'] != "0":
                 scorer = User.objects.get(id=self.cleaned_data[f'scorer_name_{i}'])
                 scorer.total_goals += self.cleaned_data[f'scorer_count_{i}']
