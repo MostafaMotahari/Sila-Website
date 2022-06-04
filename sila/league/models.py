@@ -32,6 +32,7 @@ class Team(models.Model):
     transfers_in = models.ManyToManyField("account.User", null=True, blank=True, related_name='transferred_in')
     transfers_out = models.ManyToManyField("account.User", null=True, blank=True, related_name='transferred_out')
     due_amount = models.IntegerField(default=0)
+    stadium_link = models.URLField(blank=True)
 
     class Meta:
         verbose_name = "Team"
@@ -90,8 +91,8 @@ class Match(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, null=True, blank=True, related_name='league_mathces')
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
-    home_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='home_goals')
-    away_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='away_goals')
+    # home_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='home_goals')
+    # away_scores = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='away_goals')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     starts_at = models.DateTimeField(auto_now_add=False, null=True)
     referee = models.ForeignKey("account.Referee", on_delete=models.SET_NULL, null=True, blank=True, related_name="referee_matches")

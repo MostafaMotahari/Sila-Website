@@ -1,8 +1,27 @@
-from rest_framework.generics import ListAPIView
-from .serializers import MatchSerializer
-from league.models import Match
+from rest_framework.response import Response
+from rest_framework import viewsets
+from .filters import MatchTimeFilter
+from .serializers import (
+    MatchSerializer,
+    UserSerializer,
+    TeamSerializer,
+)
+from league.models import Match, MatchImage, Team
+from account.models import User
+
 
 # Create your views here.
-class MatchAPIView(ListAPIView):
+class MatchAPIView(viewsets.ModelViewSet):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
+    filter_class = MatchTimeFilter
+
+
+class UserAPIView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class TeamAPIView(viewsets.ModelViewSet):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer

@@ -219,8 +219,6 @@ class MatchEditForm(forms.ModelForm):
             "league",
             "home_team",
             "away_team",
-            "home_scores",
-            "away_scores",
             "starts_at",
             "referee",
         ]
