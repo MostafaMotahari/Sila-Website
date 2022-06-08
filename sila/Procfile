@@ -1,1 +1,0 @@
-web: gunicorn sila.wsgi --chdir=sila/
