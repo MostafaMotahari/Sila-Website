@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath sila sila.wsgi --chdir=sila/
+web: gunicorn sila.wsgi
