@@ -70,145 +70,46 @@
     <!-- ***** Section Title End ***** -->
 
     <div class="row">
-      <!-- ***** Pricing Item Start ***** -->
-      <div class="col-lg-4 col-md-6 col-sm-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
-        <div class="pricing-item">
-          <div class="pricing-header">
-            <h3 class="pricing-title">Starter</h3>
-          </div>
-          <div class="pricing-body">
-            <div class="price-wrapper">
-              <span class="currency">$</span>
-              <span class="price">14.50</span>
-              <span class="period">monthly</span>
-            </div>
-            <ul class="list">
-              <li class="active">60 GB space</li>
-              <li class="active">600 GB transfer</li>
-              <li class="active">Pro Design Panel</li>
-              <li>15-minute support</li>
-              <li>Unlimited Emails</li>
-              <li>24/7 Security</li>
-            </ul>
-          </div>
-          <div class="pricing-footer">
-            <a href="#" class="main-button">Purchase Now</a>
-          </div>
-        </div>
-      </div>
-      <!-- ***** Pricing Item End ***** -->
 
       <!-- ***** Pricing Item Start ***** -->
-      <div class="col-lg-4 col-md-6 col-sm-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
-        <div class="pricing-item active">
-          <div class="pricing-header">
-            <h3 class="pricing-title">Premium</h3>
-          </div>
-          <div class="pricing-body">
-            <div class="price-wrapper">
-              <span class="currency">$</span>
-              <span class="price">21.50</span>
-              <span class="period">monthly</span>
+      {% for table in leagues_tables %}
+        <div class="col-lg-4 col-md-6 col-sm-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
+          <div class="pricing-item">
+            <div class="pricing-header">
+              <h3 class="pricing-title">{{table.first.league.name}}</h3>
             </div>
-            <ul class="list">
-              <li class="active">120 GB space</li>
-              <li class="active">1200 GB transfer</li>
-              <li class="active">Pro Design Panel</li>
-              <li class="active">15-minute support</li>
-              <li>Unlimited Emails</li>
-              <li>24/7 Security</li>
-            </ul>
-          </div>
-          <div class="pricing-footer">
-            <a href="#" class="main-button">Purchase Now</a>
+            <div class="pricing-body">
+              <div class="price-wrapper">
+                <span class="price">{{table.first.points}}</span>
+              </div>
+              <ul class="list">
+                <div class="card">
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <table class="table">
+                      <tbody>
+                        {% for team in table %}
+                          <tr>
+                            <td>{{team.name}}</td>
+                            <td>{{team.points}}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+              </ul>
+            </div>
+            <div class="pricing-footer">
+              <a href="#" class="main-button">Purchase Now</a>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- ***** Pricing Item End ***** -->
-
-      <!-- ***** Pricing Item Start ***** -->
-      <div class="col-lg-4 col-md-6 col-sm-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
-        <div class="pricing-item">
-          <div class="pricing-header">
-            <h3 class="pricing-title">Advanced</h3>
-          </div>
-          <div class="pricing-body">
-            <div class="price-wrapper">
-              <span class="currency">$</span>
-              <span class="price">42.00</span>
-              <span class="period">monthly</span>
-            </div>
-            <ul class="list">
-              <li class="active">250 GB space</li>
-              <li class="active">5000 GB transfer</li>
-              <li class="active">Pro Design Panel</li>
-              <li class="active">15-minute support</li>
-              <li class="active">Unlimited Emails</li>
-              <li class="active">24/7 Security</li>
-            </ul>
-          </div>
-          <div class="pricing-footer">
-            <a href="#" class="main-button">Purchase Now</a>
-          </div>
-        </div>
-      </div>
-      <!-- ***** Pricing Item End ***** -->
+      {% endfor %}
     </div>
   </div>
 </section>
 <!-- ***** Pricing Plans End ***** -->
 
-
-<!-- ***** Features Big Item Start ***** -->
-<section class="section padding-top-70 padding-bottom-0" id="features">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-5 col-md-12 col-sm-12 align-self-center"
-        data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
-        <img src="{% static 'league/assets/images/left-image.png' %}" class="rounded img-fluid d-block mx-auto" alt="App">
-      </div>
-      <div class="col-lg-1"></div>
-      <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-top-fix">
-        <div class="left-heading">
-          <h2 class="section-title"> discuss about you project</h2>
-        </div>
-        <div class="left-text">
-          <p>Nullam sit amet purus libero. Etiam ullamcorper nisl ut augue blandit, at finibus leo efficitur. Nam
-            gravida purus non sapien auctor, ut aliquam magna ullamcorper.</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="hr"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ***** Features Big Item End ***** -->
-
-<!-- ***** Features Big Item Start ***** -->
-<section class="section padding-bottom-100">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-bottom-fix">
-        <div class="left-heading">
-          <h2 class="section-title">We can help you to grow your business</h2>
-        </div>
-        <div class="left-text">
-          <p>Aenean pretium, ipsum et porttitor auctor, metus ipsum iaculis nisi, a bibendum lectus libero vitae urna.
-            Sed id leo eu dolor luctus congue sed eget ipsum. Nunc nec luctus libero. Etiam quis dolor elit.</p>
-        </div>
-      </div>
-      <div class="col-lg-1"></div>
-      <div class="col-lg-5 col-md-12 col-sm-12 align-self-center mobile-bottom-fix-big"
-        data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-        <img src="{% static 'league/assets/images/right-image.png' %}" class="rounded img-fluid d-block mx-auto" alt="App">
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ***** Features Big Item End ***** -->
 
 <!-- ***** Home Parallax Start ***** -->
 <section class="mini" id="work-process">
@@ -225,27 +126,14 @@
 
       <!-- ***** Mini Box Start ***** -->
       <div class="row">
-        <div class="col-lg-4 col-md-3 col-sm-6 col-6">
-          <a href="#" class="mini-box">
-            <i><img src="{% static 'league/assets/images/work-process-item-01.png' %}" alt=""></i>
-            <strong>Get Ideas</strong>
-            <span>Godard pabst prism fam cliche.</span>
-          </a>
-        </div>
-        <div class="col-lg-4 col-md-3 col-sm-6 col-6">
-          <a href="#" class="mini-box">
-            <i><img src="{% static 'league/assets/images/work-process-item-01.png' %}" alt=""></i>
-            <strong>Sketch Up</strong>
-            <span>Godard pabst prism fam cliche.</span>
-          </a>
-        </div>
-        <div class="col-lg-4 col-md-3 col-sm-6 col-6">
-          <a href="#" class="mini-box">
-            <i><img src="{% static 'league/assets/images/work-process-item-01.png' %}" alt=""></i>
-            <strong>Discuss</strong>
-            <span>Godard pabst prism fam cliche.</span>
-          </a>
-        </div>
+        {% for match, result in matches_and_goals.items %}
+          <div class="col-lg-4 col-md-3 col-sm-6 col-6">
+            <a href="#" class="mini-box">
+              <i><img src="{{match.home_team.logo}}" alt=""> - <img src="{{match.home_team.logo}}" alt=""></i>
+              <strong>{{result}}</strong>
+            </a>
+          </div>
+          {% endfor %}
       </div>
       <!-- ***** Mini Box End ***** -->
     </div>
@@ -260,7 +148,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="center-heading">
-          <h2 class="section-title">Hey, Whats uo?</h2>
+          <h2 class="section-title">Hey, Whats up?</h2>
         </div>
       </div>
       <div class="offset-lg-3 col-lg-6">
@@ -444,4 +332,57 @@
   </div>
 </section>
 <!-- ***** Blog End ***** -->
+
+
+
+<!-- ***** Features Big Item Start ***** -->
+<section class="section padding-top-70 padding-bottom-0" id="features">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 col-md-12 col-sm-12 align-self-center"
+        data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+        <img src="{% static 'league/assets/images/left-image.png' %}" class="rounded img-fluid d-block mx-auto" alt="App">
+      </div>
+      <div class="col-lg-1"></div>
+      <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-top-fix">
+        <div class="left-heading">
+          <h2 class="section-title"> discuss about you project</h2>
+        </div>
+        <div class="left-text">
+          <p>Nullam sit amet purus libero. Etiam ullamcorper nisl ut augue blandit, at finibus leo efficitur. Nam
+            gravida purus non sapien auctor, ut aliquam magna ullamcorper.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="hr"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ***** Features Big Item End ***** -->
+
+<!-- ***** Features Big Item Start ***** -->
+<section class="section padding-bottom-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-bottom-fix">
+        <div class="left-heading">
+          <h2 class="section-title">We can help you to grow your business</h2>
+        </div>
+        <div class="left-text">
+          <p>Aenean pretium, ipsum et porttitor auctor, metus ipsum iaculis nisi, a bibendum lectus libero vitae urna.
+            Sed id leo eu dolor luctus congue sed eget ipsum. Nunc nec luctus libero. Etiam quis dolor elit.</p>
+        </div>
+      </div>
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5 col-md-12 col-sm-12 align-self-center mobile-bottom-fix-big"
+        data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+        <img src="{% static 'league/assets/images/right-image.png' %}" class="rounded img-fluid d-block mx-auto" alt="App">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ***** Features Big Item End ***** -->
 {% endblock %}
