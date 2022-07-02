@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from league.models import Team, League, Tournament, Match, MatchImage
+from league.models import Team, League, Tournament, Match, MatchImage, StadiumModel
 
 # Admin models
 class TournamentAdmin(admin.ModelAdmin):
@@ -26,9 +26,14 @@ class MatchImageAdmin(admin.ModelAdmin):
     list_display = ("get_match_details", "name", "type", )
     ordering = ('-pk', )
 
+class StadiumAdmin(admin.ModelAdmin):
+    list_display = ("name", "team", "level", )
+    ordering = ('-pk', )
+
 # Register your models here.
 admin.site.register(Team, TeamAdmin)
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Tournament, TournamentAdmin)
 admin.site.register(Match, MatchAdmin)
 admin.site.register(MatchImage, MatchImageAdmin)
+admin.site.register(StadiumModel, StadiumAdmin)

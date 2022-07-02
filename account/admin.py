@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from account.models import User, Referee, Reporter
+from account.models import User, Referee, Reporter, Report
 
 # Admin models
 class RefereeAdmin(admin.ModelAdmin):
@@ -10,6 +10,8 @@ class RefereeAdmin(admin.ModelAdmin):
 class ReporterAdmin(admin.ModelAdmin):
     list_display = ('user',)
 
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('writer', 'report_date', 'report_text',)
 
 UserAdmin.fieldsets += (
     ("Custom Fields", {"fields": (
@@ -43,3 +45,4 @@ UserAdmin.fieldsets += (
 admin.site.register(User, UserAdmin)
 admin.site.register(Referee, RefereeAdmin)
 admin.site.register(Reporter, ReporterAdmin)
+admin.site.register(Report, ReportAdmin)

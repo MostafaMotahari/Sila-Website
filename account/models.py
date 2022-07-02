@@ -89,3 +89,6 @@ class Report(models.Model):
     class Meta:
         verbose_name = "Report"
         verbose_name_plural = "Reports"
+
+    def writer(self):
+        return self.reporter_object.user.get_full_name()
