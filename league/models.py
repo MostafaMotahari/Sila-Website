@@ -42,6 +42,13 @@ class Team(models.Model):
         return self.name
 
 
+class StadiumModel(models.Model):
+    name = models.CharField(max_length=255)
+    telegram_chat_id = models.IntegerField(default=0)
+    team = models.OneToOneField(Team, on_delete=models.SET_NULL, null=True)
+    level = models.IntegerField(default=1)
+
+
 class Transfers(models.Model):
     came_in = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='came_in_transfers')
     came_out = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='came_out_transfers')

@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -45,6 +46,11 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
+
+
+class SettingModel(models.Model):
+    main_logo = models.ImageField(upload_to="images/website_logos/", blank=True, verbose_name="Main Website Logo")
+    permatch_cost = models.IntegerField(default=0, verbose_name="Per Match Cost Price")
 
 
 class Referee(models.Model):

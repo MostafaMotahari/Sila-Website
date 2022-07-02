@@ -3,6 +3,6 @@ from league.views import home
 
 app_name = "league"
 
-urlpatters = [
-    path('', home, name="home")
+urlpatterns = [
+    path("", home, name="home")
 ]

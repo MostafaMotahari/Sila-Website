@@ -1,4 +1,3 @@
-from tempfile import TemporaryFile
 from django.contrib.auth import views
 from django.urls import path
 from account.views import (
