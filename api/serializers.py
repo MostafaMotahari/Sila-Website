@@ -28,6 +28,7 @@ class MatchSerializer(serializers.ModelSerializer):
 
     def get_referee(self, obj):
         return {
+            "id": obj.referee.user.id,
             "full_name": obj.referee.user.get_full_name(),
             "telegram_id": obj.referee.user.user_telegram_id,
         }
