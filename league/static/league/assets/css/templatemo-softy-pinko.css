@@ -769,7 +769,7 @@ features
 }
 
 .features-small-item:hover .icon {
-  background-color: #ff589e;
+  background-color: #00FFDD;
 }
 
 .features-small-item .icon {
@@ -783,7 +783,7 @@ features
   margin: auto;
   position: relative;
   margin-bottom: 30px;
-  background: #8261ee;
+  background: #2FA4FF;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -1214,7 +1214,7 @@ pricing
 }
 
 .pricing-item.active .pricing-body .price-wrapper {
-  background-color: #ff589e;
+  background-color: #00FFDD;
 }
 
 .pricing-item.active .pricing-body .price-wrapper .currency {
@@ -1257,7 +1257,7 @@ pricing
   text-align: center;
   padding-top: 20px;
   padding-bottom: 13px;
-  background: #8261ee;
+  background: #2FA4FF;
   width: 80%;
   margin: auto;
   margin-bottom: 40px;
