@@ -160,62 +160,25 @@
     <!-- ***** Section Title End ***** -->
 
     <div class="row">
-      <!-- ***** Testimonials Item Start ***** -->
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="team-item">
-          <div class="team-content">
-            <i><img src="assets/images/testimonial-icon.png" alt=""></i>
-            <p>Proin a neque nisi. Nam ipsum nisi, venenatis ut nulla quis, egestas scelerisque orci. Maecenas a finibus
-              odio.</p>
-            <div class="user-image">
-              <!-- <img src="http://placehold.it/60x60" alt=""> -->
-            </div>
-            <div class="team-info">
-              <h3 class="user-name">Catherine Soft</h3>
-              <span>Managing Director</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ***** Testimonials Item End ***** -->
-
-      <!-- ***** Testimonials Item Start ***** -->
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="team-item">
-          <div class="team-content">
-            <i><img src="assets/images/testimonial-icon.png" alt=""></i>
-            <p>Integer molestie aliquam gravida. Nullam nec arcu finibus, imperdiet nulla vitae, placerat nibh. Cras
-              maximus venenatis molestie.</p>
-            <div class="user-image">
-              <!-- <img src="http://placehold.it/60x60" alt=""> -->
-            </div>
-            <div class="team-info">
-              <h3 class="user-name">Kelvin Wood</h3>
-              <span>Digital Marketer</span>
+      {% for report in top_3_reports %}
+        <!-- ***** Testimonials Item Start ***** -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="team-item">
+            <div class="team-content">
+              <i><img src="assets/images/testimonial-icon.png" alt=""></i>
+              <p>{{report.report_text}}</p>
+              <div class="user-image">
+                <!-- <img src="http://placehold.it/60x60" alt=""> -->
+              </div>
+              <div class="team-info">
+                <h3 class="user-name">{{report.reporter_object.user.get_full_name}}</h3>
+                <span>{{report.report_date}}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- ***** Testimonials Item End ***** -->
-
-      <!-- ***** Testimonials Item Start ***** -->
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="team-item">
-          <div class="team-content">
-            <i><img src="assets/images/testimonial-icon.png" alt=""></i>
-            <p>Quisque diam odio, maximus ac consectetur eu, auctor non lorem. Cras quis est non ante ultrices molestie.
-              Ut vehicula et diam at aliquam.</p>
-            <div class="user-image">
-              <!-- <img src="http://placehold.it/60x60" alt=""> -->
-            </div>
-            <div class="team-info">
-              <h3 class="user-name">David Martin</h3>
-              <span>Website Manager</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ***** Testimonials Item End ***** -->
+        <!-- ***** Testimonials Item End ***** -->
+      {% endfor %}
     </div>
   </div>
 </section>

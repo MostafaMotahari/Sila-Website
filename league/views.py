@@ -8,7 +8,8 @@ from league.models import (
     Goal
 )
 from account.models import (
-    User
+    User,
+    Report
 )
 from account.utilities import iranDateTime
 
@@ -46,9 +47,14 @@ def home(request):
 
         matches_and_goals[match] = f"{home_team_goals} - {away_team_goals}"
 
+    # Get top 3 news
+    top_3_reports = Report.objects.all().order_by("report_date")[:3]
+
+    # Fill context data
     context = {
         "top_scorers": top_scorers,
         "leagues_tables": leagues_tables,
-        "matches_and_goals": matches_and_goals
+        "matches_and_goals": matches_and_goals,
+        "top_3_reports": top_3_reports
     }
     return render(request, 'league/index.html', context)
