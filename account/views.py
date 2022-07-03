@@ -3,9 +3,9 @@ from django.views.generic import ListView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from league.models import Match, Team, Tournament, MatchImage, League
-from account.models import User, Referee
-from account.forms import UpdateUserForm, CreateUserForm, CreateMatchForm, MatchEditForm
-from account.mixins import AdminMixin, TopLevelAdminMixin, RefereeMixin
+from account.models import User, Referee, Report
+from account.forms import UpdateUserForm, CreateUserForm, CreateMatchForm, MatchEditForm, CreateReportForm
+from account.mixins import AdminMixin, TopLevelAdminMixin, RefereeMixin, ReporterMixin
 from account.utilities import iranDateTime
 
 from datetime import time, datetime
@@ -202,3 +202,24 @@ class MatchEditView(LoginRequiredMixin, RefereeMixin, UpdateView):
             return HttpResponseRedirect(reverse_lazy('account:profile'))
 
         return HttpResponse('Form is not valid') # Edit this later.
+
+
+class CreateReportView(LoginRequiredMixin, ReporterMixin, CreateView):
+    model = Report
+    form_class = CreateReportForm
+    template_name = "account/create_report.html"
+    success_url = reverse_lazy("account:profile")
+
+
+class ReportListView(LoginRequiredMixin, ReporterMixin, ListView):
+    model = Report
+    paginate_by = 10
+    template_name = "account/report_editor.html"
+    context_object_name = 'reports'
+
+
+class UpdateReportView(LoginRequiredMixin, ReporterMixin, UpdateView):
+    model = Report
+    form_class = CreateReportForm
+    template_name = "account/report_editor.html"
+    success_url = reverse_lazy("account:profile")

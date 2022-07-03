@@ -83,7 +83,8 @@ class Reporter(models.Model):
 
 
 class Report(models.Model):
-    report_date = models.DateTimeField(blank=True, null=True, verbose_name="Report Date")
+    report_date = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name="Report Date")
+    report_subject = models.CharField(max_length=80, blank=True, verbose_name="Report Subject")
     report_text = models.TextField(blank=True, verbose_name="Report Text")
     reporter_object = models.ForeignKey(Reporter, on_delete=models.CASCADE, blank=True, null=True, verbose_name="reports")
 

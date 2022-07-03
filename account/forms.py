@@ -1,3 +1,4 @@
+from dataclasses import fields
 from account.models import Report, User, Referee, Reporter
 from league.models import Match, MatchImage
 from django import forms
@@ -271,3 +272,12 @@ class MatchEditForm(forms.ModelForm):
         self.cleaned_data['referee'] = refree
         refree.experience += 1
         refree.save()
+
+
+class CreateReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = [
+            "report_subject" ,
+            "report_text"
+        ]

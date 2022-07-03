@@ -9,7 +9,10 @@ from account.views import (
     CreateUserView,
     CraeteMatchView,
     MatchManagerView,
-    MatchEditView
+    MatchEditView,
+    CreateReportView,
+    ReportListView,
+    UpdateReportView,
 )
 
 app_name = "account"
@@ -17,14 +20,21 @@ app_name = "account"
 urlpatterns = [
     path("", TeamsListView.as_view(), name="profile"),
     path("login/", views.LoginView.as_view(), name="login"),
+    
     path("tours/", TournamentView.as_view(), name="tournament"),
     path("tours/register/<int:pk>", TournamentRegisterView.as_view(), name="tournament_register"),
+
     path("user-control/", SelectUserView.as_view(), name="user_control"),
     path("user-control/update-user/<int:pk>", UpdateUserView.as_view(), name="user_update"),
     path("register-user/", CreateUserView.as_view(), name="register_user"),
+
     path("create-match/", CraeteMatchView.as_view(), name="create_match"),
     path("match-manager/", MatchManagerView.as_view(), name="match_manager"),
     path("match-manager/edit/<int:pk>", MatchEditView.as_view(), name="match_editor"),
+
+    path("create-report/", CreateReportView.as_view(), name="create_report"),
+    path("update-report/", ReportListView.as_view(), name="update_report"),
+    path("update-report/edit/<int:pk>", UpdateReportView.as_view(), name="update_report_editor"),
     
     # path("user-control/update-user/", UpdateUserView.as_view(), name="update_user"),
     # path("logout/", views.LogoutView.as_view(), name="logout"),

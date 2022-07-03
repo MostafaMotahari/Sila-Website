@@ -1,0 +1,76 @@
+{% extends 'account/layouts/master.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block styles %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'account/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'account/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-12 col-sm-12">
+        <!-- general form elements disabled -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Create Report</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <h5 style="color: rgb(95, 194, 255);">Report details:</h4>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Subject:</label>
+                      {{form.report_subject|add_class:"form-control"|attr:"style:width: 100%;"}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      {{form.report_text|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Report text ..."}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    <button class="btn btn-block btn-success btn-lg">Create Report</button>
+                  </div>
+                </div>
+
+            </form>
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- Jquery -->
+<script src="{% static 'account/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'account/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'account/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<!-- Boostrap -->
+<script src="{% static 'account/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+{% endblock %}

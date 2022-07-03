@@ -1,0 +1,134 @@
+{% extends 'account/layouts/master.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block styles %}
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+<!-- BS Stepper -->
+<link rel="stylesheet" href="{% static 'account/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="{% static 'account/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="card-footer">
+    <div id="match-detail">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Reports created by you:</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Subject</th>
+                    <th>Start time</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for report in reports %}
+                    <tr>
+                      <td>{{report.report_subject}}</td>
+                      <td><span class="badge bg-success">{{report.report_date}}</span></td>
+                      <td><a onclick="loadReports({{report.pk}});"><span class="fas fa-arrow-circle-right"></span></a></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <ul class="pagination pagination-sm m-0 float-right">
+                {% if page_obj.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+                <li class="page-item"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                {% if page_obj.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+                {% endif %}
+                </ul>
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Match edit section -->
+
+    <div id="match-edit">
+      {% if form.as_p %}
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <!-- general form elements disabled -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Update report:</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+    
+                <form method="post" enctype="multipart/form-data" action="{% url 'account:update_report_editor' request.resolver_match.kwargs.pk %}">
+                    {% csrf_token %}
+      
+                    <h5 style="color: rgb(95, 194, 255);">Report details:</h4>
+      
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Subject:</label>
+                            {{form.report_subject|add_class:"form-control"|attr:"style:width: 100%;"}}
+                          </div>
+                        </div>
+                      </div>
+      
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            {{form.report_text|add_class:"form-control"|attr:"type:text"|attr:"placeholder:Report text ..."}}
+                          </div>
+                        </div>
+                      </div>
+      
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <button class="btn btn-block btn-success btn-lg">Update Report</button>
+                        </div>
+                      </div>
+      
+                  </form>
+    
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'account/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'account/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'account/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<!-- InputMask -->
+<script src="{% static 'account/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'account/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
+<!-- Custom JS -->
+<script src="{% static 'account/dist/js/report_editor.js' %}"></script>
+<!-- Bootstrap Switch -->
+<script src="{% static 'account/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<!-- Boostrap -->
+<script src="{% static 'account/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+{% endblock %}

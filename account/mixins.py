@@ -16,3 +16,9 @@ class RefereeMixin():
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_superuser or request.user.is_referee:
             return super().dispatch(request, *args, **kwargs)
+
+
+class ReporterMixin():
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser or request.user.is_reporter:
+            return super().dispatch(request, *args, **kwargs)
