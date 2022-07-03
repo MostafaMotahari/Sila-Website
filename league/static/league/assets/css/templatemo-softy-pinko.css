@@ -314,7 +314,7 @@ a.main-button-slider {
   font-size: 13px;
   border-radius: 20px;
   padding: 12px 20px;
-  background-color: #ff589e;
+  background-color: #ff1e56;
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -325,14 +325,14 @@ a.main-button-slider {
 }
 
 a.main-button-slider:hover {
-  background-color: #8261ee;
+  background-color: #323232;
 }
 
 a.main-button {
   font-size: 13px;
   border-radius: 20px;
   padding: 12px 20px;
-  background-color: #8261ee;
+  background-color: #323232;
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -343,7 +343,7 @@ a.main-button {
 }
 
 a.main-button:hover {
-  background-color: #ff589e;
+  background-color: #ff1e56;
 }
 
 button.main-button {
@@ -353,7 +353,7 @@ button.main-button {
   font-size: 13px;
   border-radius: 20px;
   padding: 12px 20px;
-  background-color: #8261ee;
+  background-color: #323232;
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -769,7 +769,7 @@ features
 }
 
 .features-small-item:hover .icon {
-  background-color: #00FFDD;
+  background-color: #ff1e56;
 }
 
 .features-small-item .icon {
@@ -783,7 +783,7 @@ features
   margin: auto;
   position: relative;
   margin-bottom: 30px;
-  background: #2FA4FF;
+  background: #323232;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -1257,7 +1257,7 @@ pricing
   text-align: center;
   padding-top: 20px;
   padding-bottom: 13px;
-  background: #2FA4FF;
+  background: #323232;
   width: 80%;
   margin: auto;
   margin-bottom: 40px;

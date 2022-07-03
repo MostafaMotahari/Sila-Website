@@ -9,7 +9,8 @@ from league.models import (
 )
 from account.models import (
     User,
-    Report
+    Report,
+    SettingModel
 )
 from account.utilities import iranDateTime
 
@@ -41,20 +42,29 @@ def home(request):
 
         for goal in goals:
             if goal.scorer in match.home_team:
-                home_team_goals += 1
+                home_team_goals += goal.count
             else:
-                away_team_goals += 1
+                away_team_goals += goal.count
 
         matches_and_goals[match] = f"{home_team_goals} - {away_team_goals}"
 
     # Get top 3 news
     top_3_reports = Report.objects.all().order_by("report_date")[:3]
 
+    # Small details
+    players_count = User.objects.all().__len__
+    teams_count = Team.objects.all().__len__
+    matches_count = Match.objects.all().__len__
+
     # Fill context data
     context = {
+        "settings": SettingModel.objects.first(),
         "top_scorers": top_scorers,
         "leagues_tables": leagues_tables,
         "matches_and_goals": matches_and_goals,
-        "top_3_reports": top_3_reports
+        "top_3_reports": top_3_reports,
+        "players_count": players_count,
+        "teams_count": teams_count,
+        "matches_count": matches_count,
     }
     return render(request, 'league/index.html', context)

@@ -43,14 +43,14 @@
           <nav class="main-nav">
             <!-- ***** Logo Start ***** -->
             <a href="#" class="logo">
-              <img src="{% static 'league/assets/images/logo.png' %}" alt="Softy Pinko" />
+              <img src="{{settings.texture_logo}}" alt="Sila League" />
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
               <li><a href="{% url 'league:home' %}" class="active">Home</a></li>
               <li><a href="#features">About</a></li>
-              <li><a href="{% url 'account:login' %}">Sign In</a></li>
+              <li><a href="{% url 'account:profile' %}">Profile</a></li>
               <!-- <li><a href="#testimonials"></a></li> -->
             </ul>
             <a class='menu-trigger'>

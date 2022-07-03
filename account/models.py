@@ -50,6 +50,7 @@ class User(AbstractUser):
 
 class SettingModel(models.Model):
     main_logo = models.ImageField(upload_to="images/website_logos/", blank=True, verbose_name="Main Website Logo")
+    texture_logo = models.ImageField(upload_to="images/website_logos/", blank=True, verbose_name="Texture Website Logo")
     permatch_cost = models.IntegerField(default=0, verbose_name="Per Match Cost Price")
 
 
