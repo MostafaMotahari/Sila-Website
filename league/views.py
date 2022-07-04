@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.shortcuts import render
+from django.views.generic import DetailView
 
 from league.models import (
     League,
@@ -15,6 +16,18 @@ from account.models import (
 from account.utilities import iranDateTime
 
 # Create your views here.
+
+# Public profile view
+class PublicProfileView(DetailView):
+    model = User
+    template_name = "league/public_profile.html"
+
+# Team profile view
+class TeamProfieView(DetailView):
+    model = Team
+    template_name = "league/team_profile.html"
+
+# Main page view
 def home(request):
     # Finding top scorer of each league and make tables of leagues
     users = User.objects.all().order_by("season_goals")
