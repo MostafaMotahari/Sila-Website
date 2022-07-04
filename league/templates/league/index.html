@@ -33,11 +33,11 @@
             {% for top_scorer in top_scorers %}
               <div class="col-lg-4 col-md-6 col-sm-6 col-12"
                 data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
-                <div class="features-small-item">
+                <div class="features-small-item" onclick="location.href='/profile/{{top_scorer.username}}';">
                   <div class="icon">
                     <i><img src="{{top_scorer.profile_picture}}" alt=""></i>
                   </div>
-                  <h5 class="features-title">{{top_scorer.get_full_name}}</h5>
+                  <h5 class="features-title">{{top_scorer.get_full_name}}</h5><br>
                   <h4>{{top_scorer.season_goals}} Goals</h4>
                   <h6>{{top_scorer.team.league.name}}</h6>
                 </div>
@@ -100,7 +100,7 @@
               </ul>
             </div>
             <div class="pricing-footer">
-              <a href="#" class="main-button">More Details</a>
+              <a href="{% url 'league:league_table' table.first.league.id %}" class="main-button">More Details</a>
             </div>
           </div>
         </div>
