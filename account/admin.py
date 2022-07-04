@@ -1,14 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from account.models import User, Referee, Reporter, Report
+from account.models import User, Referee, Reporter, Report, SettingModel
 
 # Admin models
 class RefereeAdmin(admin.ModelAdmin):
     list_display = ('user',)
 
-
 class ReporterAdmin(admin.ModelAdmin):
     list_display = ('user',)
+
+class SettingAdmin(admin.ModelAdmin):
+    pass
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('writer', 'report_date', 'report_text',)
@@ -46,3 +48,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Referee, RefereeAdmin)
 admin.site.register(Reporter, ReporterAdmin)
 admin.site.register(Report, ReportAdmin)
+admin.site.register(SettingModel, SettingAdmin)

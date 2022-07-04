@@ -208,7 +208,7 @@ class CreateReportView(LoginRequiredMixin, ReporterMixin, CreateView):
     model = Report
     form_class = CreateReportForm
     template_name = "account/create_report.html"
-    success_url = reverse_lazy("account:profile")
+    success_url = reverse_lazy("account:update_report")
 
 
 class ReportListView(LoginRequiredMixin, ReporterMixin, ListView):
@@ -222,4 +222,4 @@ class UpdateReportView(LoginRequiredMixin, ReporterMixin, UpdateView):
     model = Report
     form_class = CreateReportForm
     template_name = "account/report_editor.html"
-    success_url = reverse_lazy("account:profile")
+    success_url = reverse_lazy("account:update_report")

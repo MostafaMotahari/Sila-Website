@@ -53,6 +53,10 @@ class SettingModel(models.Model):
     texture_logo = models.ImageField(upload_to="images/website_logos/", blank=True, verbose_name="Texture Website Logo")
     permatch_cost = models.IntegerField(default=0, verbose_name="Per Match Cost Price")
 
+    class Meta:
+        verbose_name = "Setting"
+        verbose_name_plural = "Settings"
+
 
 class Referee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="referee_user")
