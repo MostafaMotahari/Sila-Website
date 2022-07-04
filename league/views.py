@@ -22,6 +22,9 @@ class PublicProfileView(DetailView):
     model = User
     template_name = "league/public_profile.html"
 
+    def get_object(self):
+        return User.objects.get(username=self.kwargs.get("username"))
+
 # Team profile view
 class TeamProfieView(DetailView):
     model = Team
