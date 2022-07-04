@@ -30,6 +30,18 @@ class TeamProfieView(DetailView):
     model = Team
     template_name = "league/team_profile.html"
 
+# League table view
+class LeagueTableView(DetailView):
+    model = League
+    template_name = "league/league_table.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["ordered_teams"] = context["object"].league_teams.all().order_by("-points")
+        return context
+
+
 # Main page view
 def home(request):
     # Finding top scorer of each league and make tables of leagues
@@ -44,7 +56,7 @@ def home(request):
 
         if user.team.league in leagues:
             top_scorers.append(user)
-            leagues_tables.append(Team.objects.filter(league=user.team.league).all().order_by("points")[:6])
+            leagues_tables.append(Team.objects.filter(league=user.team.league).all().order_by("-points")[:6])
             leagues.remove(user.team.league)
 
     # Get three last match results

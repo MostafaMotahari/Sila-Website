@@ -1,0 +1,41 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet"> -->
+
+  <title>{{object.name}} | Table</title>
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static 'league/assets/css/league_table.css' %}">
+</head>
+
+<body>
+  <div class="container">
+    <h2>{{object.name}} Leaderboard</h2>
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col col-1">Rank</div>
+        <div class="col col-4">Logo</div>
+        <div class="col col-2">Team</div>
+        <div class="col col-3">Points</div>
+      </li>
+      {% for team in ordered_teams %}
+        <li class="table-row">
+          <div class="col col-1" data-label="Rank">{{forloop.counter}}</div>
+          <div class="col col-4" data-label="Logo"><img src="{{team.logo.url}}" alt=""></div>
+          <div class="col col-2" data-label="Team Name">{{team.name}}</div>
+          <div class="col col-3" data-label="Points">{{team.points}}</div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</body>
+
+</html>
