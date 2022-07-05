@@ -44,7 +44,7 @@ class Team(models.Model):
 
 class StadiumModel(models.Model):
     name = models.CharField(max_length=255)
-    telegram_chat_id = models.IntegerField(default=0) # Change this to charfiled later
+    telegram_chat_id = models.CharField(max_length=20)
     team = models.OneToOneField(Team, on_delete=models.SET_NULL, null=True, related_name="team_stadium")
     level = models.IntegerField(default=1)
 
