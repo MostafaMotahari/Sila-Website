@@ -1,4 +1,5 @@
 from itertools import count
+from tabnanny import verbose
 from django.db import models
 
 
@@ -29,10 +30,9 @@ class Team(models.Model):
     wins = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
-    transfers_in = models.ManyToManyField("account.User", null=True, blank=True, related_name='transferred_in')
-    transfers_out = models.ManyToManyField("account.User", null=True, blank=True, related_name='transferred_out')
+    transfers_in = models.ManyToManyField("account.User", blank=True, related_name='transferred_in')
+    transfers_out = models.ManyToManyField("account.User", blank=True, related_name='transferred_out')
     due_amount = models.IntegerField(default=0)
-    stadium_link = models.URLField(blank=True)
 
     class Meta:
         verbose_name = "Team"
@@ -44,9 +44,13 @@ class Team(models.Model):
 
 class StadiumModel(models.Model):
     name = models.CharField(max_length=255)
-    telegram_chat_id = models.IntegerField(default=0)
-    team = models.OneToOneField(Team, on_delete=models.SET_NULL, null=True)
+    telegram_chat_id = models.IntegerField(default=0) # Change this to charfiled later
+    team = models.OneToOneField(Team, on_delete=models.SET_NULL, null=True, related_name="team_stadium")
     level = models.IntegerField(default=1)
+
+    class Meta:
+        verbose_name = "Stadium"
+        verbose_name_plural = "Stadiums"
 
 
 class Transfers(models.Model):
@@ -83,7 +87,7 @@ class Tournament(models.Model):
     referee = models.ForeignKey("account.Referee", on_delete=models.SET_NULL, null=True, blank=True, related_name='referee_tournaments')
     is_active = models.BooleanField(default=False)
     winner = models.ForeignKey("account.User", on_delete=models.SET_NULL, null=True, blank=True, related_name='won_tournaments')
-    participants = models.ManyToManyField("account.User", null=True, blank=True, related_name='participanted_tournaments')
+    participants = models.ManyToManyField("account.User", blank=True, related_name='participanted_tournaments')
 
     class Meta:
         verbose_name = "Tournament"
