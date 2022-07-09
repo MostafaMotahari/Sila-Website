@@ -1,6 +1,8 @@
 from dataclasses import fields
-from account.models import Report, User, Referee, Reporter
-from league.models import Match, MatchImage
+
+from django.conf import settings
+from account.models import Report, User, Referee, Reporter, SettingModel
+from league.models import Match, MatchImage, Team
 from django import forms
 import datetime
 import itertools
@@ -262,10 +264,17 @@ class MatchEditForm(forms.ModelForm):
         for i in range(1, 9):
             if self.cleaned_data[f'scorer_name_{i}'] != "0":
                 scorer = User.objects.get(id=self.cleaned_data[f'scorer_name_{i}'])
-                scorer.total_goals += self.cleaned_data[f'scorer_count_{i}']
-                scorer.season_goals += self.cleaned_data[f'scorer_count_{i}']
+                scorer.total_goals += int(self.cleaned_data[f'scorer_count_{i}'])
+                scorer.season_goals += int(self.cleaned_data[f'scorer_count_{i}'])
                 scorer.played_matchs += 1
                 scorer.save()
+
+        # Register team budget cust detail
+        # if self.cleaned_data["scorer_name_1"] != "0":
+        #     team_scorer: Team = User.objects.get(id=self.cleaned_data[f'scorer_name_1']).team
+        #     setting: SettingModel = SettingModel.objects.first()
+        #     team_scorer.budget -= setting.permatch_cost
+        #     team_scorer.save()
 
         # Register referee details
         refree = Referee.objects.get(user=User.objects.get(id=self.cleaned_data['referee']))

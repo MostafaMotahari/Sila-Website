@@ -1,0 +1,275 @@
+
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    background: #202020;
+    font-family: "sans-serif";
+}
+.card-mousiol {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 500px;
+    height: 800px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px 5px rgba(0, 0, 0, 0.2);
+    background: #151515;
+    overflow: hidden;
+}
+.card-mousiol .ds-top {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 600px;
+    height: 160px;
+    background: #3ad3ff;
+    animation: dsTop 1.5s;
+}
+.card-mousiol .avatar-holder {
+    position: absolute;
+    margin: auto;
+    top: 40px;
+    right: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px #151515, inset 0 0 0 5px #000, inset 0 0 0 5px #000, inset 0 0 0 5px #000, inset 0 0 0 5px #000;
+    background: white;
+    overflow: hidden;
+    animation: mvTop 1.5s;
+}
+.card-mousiol .avatar-holder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.card-mousiol .name {
+    position: absolute;
+    margin: auto;
+    top: -120px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: inherit;
+    height: 80px;
+    text-align: center;
+    animation: fadeIn 2s ease-in;
+}
+.card-mousiol .name a {
+    color: white;
+    text-decoration: none;
+    font-weight: 1400;
+    font-size: 36px;
+}
+.card-mousiol .name a:hover {
+    text-decoration: underline;
+    color: #3ad3ff;
+}
+.card-mousiol .name h6 {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    width: 80px;
+}
+.card-mousiol .button {
+    position: absolute;
+    margin: auto;
+    padding: 16px;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: inherit;
+    height: 80px;
+    text-align: center;
+    animation: fadeIn 2s ease-in;
+    outline: none;
+}
+.card-mousiol .button a {
+    padding: 10px 40px;
+    border-radius: 10px;
+    color: white;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    font-size: 20px;
+    transition: all 1s;
+}
+.card-mousiol .button a:hover {
+    color: white;
+    background: #3ad3ff;
+}
+.card-mousiol .ds-info {
+    position: absolute;
+    margin: auto;
+    top: 240px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: inherit;
+    height: 80px;
+    display: flex;
+}
+.card-mousiol .ds-info .pens, .card-mousiol .ds-info .projects, .card-mousiol .ds-info .posts {
+    position: relative;
+    left: -600px;
+    width: calc(500px / 3);
+    text-align: center;
+    color: white;
+    animation: fadeInMove 2s;
+    animation-fill-mode: forwards;
+}
+.card-mousiol .ds-info .pens h6, .card-mousiol .ds-info .projects h6, .card-mousiol .ds-info .posts h6 {
+    text-transform: uppercase;
+    color: #3ad3ff;
+}
+.card-mousiol .ds-info .pens p, .card-mousiol .ds-info .projects p, .card-mousiol .ds-info .posts p {
+    font-size: 24px;
+}
+.card-mousiol .ds-info .ds:nth-of-type(2) {
+    animation-delay: 0.5s;
+}
+.card-mousiol .ds-info .ds:nth-of-type(1) {
+    animation-delay: 1s;
+}
+.card-mousiol .ds-skill {
+    position: absolute;
+    margin: auto;
+    bottom: 20px;
+    right: 0;
+    left: 0;
+    width: 400px;
+    height: 200px;
+    animation: mvBottom 1.5s;
+}
+.card-mousiol .ds-skill h6 {
+    margin-bottom: 10px;
+    font-weight: 1400;
+    text-transform: uppercase;
+    color: #3ad3ff;
+}
+.card-mousiol .ds-skill .skill h6 {
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    margin: 8px 0;
+    color: white;
+}
+.card-mousiol .ds-skill .skill .fab {
+    color: #3ad3ff;
+    font-size: 24px;
+}
+.card-mousiol .ds-skill .skill .bar {
+    height: 10px;
+    background: #3ad3ff;
+    text-align: right;
+}
+.card-mousiol .ds-skill .skill .bar p {
+    color: white;
+    font-size: 16px;
+    padding-top: 10px;
+    animation: fadeIn 5s;
+}
+.card-mousiol .ds-skill .skill .bar:hover {
+    background: white;
+}
+.card-mousiol .ds-skill .skill .bar-html {
+    width: 95%;
+    animation: htmlSkill 1s;
+    animation-delay: 0.4s;
+}
+.card-mousiol .ds-skill .skill .bar-css {
+    width: 90%;
+    animation: cssSkill 2s;
+    animation-delay: 0.4s;
+}
+.card-mousiol .ds-skill .skill .bar-js {
+    width: 75%;
+    animation: jsSkill 3s;
+    animation-delay: 0.4s;
+}
+@keyframes fadeInMove {
+    0% {
+        opacity: 0;
+        left: -600px;
+   }
+    100% {
+        opacity: 1;
+        left: 0;
+   }
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+   }
+    100% {
+        opacity: 1;
+   }
+}
+@keyframes htmlSkill {
+    0% {
+        width: 0;
+   }
+    100% {
+        width: 95%;
+   }
+}
+@keyframes cssSkill {
+    0% {
+        width: 0;
+   }
+    100% {
+        width: 90%;
+   }
+}
+@keyframes jsSkill {
+    0% {
+        width: 0;
+   }
+    100% {
+        width: 75%;
+   }
+}
+@keyframes mvBottom {
+    0% {
+        bottom: -300px;
+   }
+    100% {
+        bottom: 20px;
+   }
+}
+@keyframes mvTop {
+    0% {
+        top: -300px;
+   }
+    100% {
+        top: 80px;
+   }
+}
+@keyframes dsTop {
+    0% {
+        top: -300px;
+   }
+    100% {
+        top: 0;
+   }
+}
+.following {
+    color: white;
+    background: #3ad3ff;
+}

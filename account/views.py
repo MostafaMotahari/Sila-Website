@@ -97,6 +97,9 @@ class CraeteMatchView(LoginRequiredMixin, RefereeMixin, CreateView):
         kwargs.update({'user': self.request.user})
         return kwargs
 
+    def get_initial(self):
+        return {'referee': self.request.user}
+
     def post(self, request, *args, **kwargs):
         # Create new match
         new_match = Match.objects.create(
@@ -155,7 +158,7 @@ class CraeteMatchView(LoginRequiredMixin, RefereeMixin, CreateView):
                     type = "search",
                 )
 
-        return HttpResponseRedirect(reverse_lazy('account:profile'))
+        return HttpResponseRedirect(reverse_lazy('account:match_manager'))
 
     
 class MatchManagerView(LoginRequiredMixin, RefereeMixin, ListView):
@@ -199,7 +202,7 @@ class MatchEditView(LoginRequiredMixin, RefereeMixin, UpdateView):
 
             final_user = form.save(commit=False)
             final_user.save()
-            return HttpResponseRedirect(reverse_lazy('account:profile'))
+            return HttpResponseRedirect(reverse_lazy('account:match_manager'))
 
         return HttpResponse('Form is not valid') # Edit this later.
 
