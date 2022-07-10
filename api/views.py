@@ -1,12 +1,12 @@
 from rest_framework.response import Response
 from rest_framework import viewsets
-from .filters import MatchTimeFilter
+from .filters import MatchTimeFilter, UserByUsernameFilter
 from .serializers import (
     MatchSerializer,
     UserSerializer,
     TeamSerializer,
 )
-from league.models import Match, MatchImage, Team
+from league.models import Match, Team
 from account.models import User
 
 
@@ -20,6 +20,7 @@ class MatchAPIView(viewsets.ModelViewSet):
 class UserAPIView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_class = UserByUsernameFilter
 
 
 class TeamAPIView(viewsets.ModelViewSet):

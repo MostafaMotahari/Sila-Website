@@ -1,5 +1,6 @@
 import django_filters
-from league.models import Match, MatchImage, Team
+from league.models import Match
+from account.models import User
 
 
 class MatchTimeFilter(django_filters.FilterSet):
@@ -8,3 +9,11 @@ class MatchTimeFilter(django_filters.FilterSet):
     class Meta:
         model = Match
         fields = "__all__"
+
+
+class UserByUsernameFilter(django_filters.FilterSet):
+    username = django_filters.CharFilter(field_name='user_telegram_id')
+
+    class Meta:
+        model = User
+        exclude = ("profile_picture", )
