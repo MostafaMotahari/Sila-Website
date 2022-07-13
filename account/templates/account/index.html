@@ -282,15 +282,14 @@
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
-          <div class="info-box mb-3 bg-info">
+          <!-- <div class="info-box mb-3 bg-info">
             <span class="info-box-icon"><i class="far fa-comment"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Direct Messages</span>
               <span class="info-box-number">163,921</span>
             </div>
-            <!-- /.info-box-content -->
-          </div>
+          </div> -->
           <!-- /.info-box -->
 
 
@@ -324,7 +323,7 @@
                   {% if member.profile_picture %}
                     <img class="img-circle elevation-2" src="{{member.profile_picture.url}}" alt="User Avatar" style="width: 90px;">
                   {% else %}
-                    <img class="img-circle elevation-2" src="/media/images/profile_pictures/user.png" alt="User Avatar" style="width: 90px;">
+                    <img class="img-circle elevation-2" src="{% static 'account/dist/img/user.png' %}" alt="User Avatar" style="width: 90px;">
                   {% endif %}
                   <a class="users-list-name" href="#">{{member.get_full_name}}</a>
                   <span class="users-list-date">{{member.player_character}}</span>
