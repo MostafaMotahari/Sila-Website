@@ -61,7 +61,7 @@
           {% if user.profile_picture %}
             <img class="img-circle elevation-2" src="{{user.profile_picture.url}}" alt="User Avatar">
           {% else %}
-            <img class="img-circle elevation-2" src="/media/images/profile_pictures/user.png" alt="User Avatar">
+            <img class="img-circle elevation-2" src="{% static 'account/dist/img/user.png' %}" alt="User Avatar">
           {% endif %}
         </div>
         <div class="card-footer">
@@ -159,11 +159,15 @@
       </div>
       <!-- /.row -->
 
-      <div class="row">
-        <div class="col-md-4">
-          <a href="{% url 'league:league_table' user.team.league.id %}" class="form-group btn btn-block btn-success btn-lg">See Your League Information</a>
-        </div>
-      </div>
+      {% if user.team %}
+        {% if user.team.league %}
+          <div class="row">
+            <div class="col-md-4">
+              <a href="{% url 'league:league_table' user.team.league.id %}" class="form-group btn btn-block btn-success btn-lg">See Your League Information</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
       
       <!-- Main row -->
       <div class="row">
