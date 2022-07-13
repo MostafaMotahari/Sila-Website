@@ -54,10 +54,12 @@ def home(request):
         if not leagues:
             break
 
-        if user.team.league in leagues:
-            top_scorers.append(user)
-            leagues_tables.append(Team.objects.filter(league=user.team.league).all().order_by("-points")[:6])
-            leagues.remove(user.team.league)
+        if user.team:
+            if user.team.league:
+                if user.team.league in leagues:
+                    top_scorers.append(user)
+                    leagues_tables.append(Team.objects.filter(league=user.team.league).all().order_by("-points")[:6])
+                    leagues.remove(user.team.league)
 
     # Get three last match results
     last_3_matches = Match.objects.filter(starts_at__lt=iranDateTime(datetime.now())).all().order_by("starts_at")[:3]
