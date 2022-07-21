@@ -13,7 +13,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'account/plugins/fontawesome-free/css/all.min.css' %}">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{% static 'account/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.3/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'account/dist/css/adminlte.min.css' %}">
   <!-- Custom style -->
@@ -190,23 +190,13 @@
 
   <!-- REQUIRED SCRIPTS -->
   <!-- jQuery -->
-  <script src="{% static 'account/plugins/jquery/jquery.min.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Bootstrap -->
   <script src="{% static 'account/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <!-- overlayScrollbars -->
-  <script src="{% static 'account/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.3/js/OverlayScrollbars.min.js"></script>
   <!-- AdminLTE App -->
   <script src="{% static 'account/dist/js/adminlte.js' %}"></script>
-
-  <!-- PAGE PLUGINS -->
-  <!-- jQuery Mapael -->
-  <script src="{% static 'account/plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
-  <script src="{% static 'account/plugins/raphael/raphael.min.js' %}"></script>
-  <script src="{% static 'account/plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
-  <script src="{% static 'account/plugins/jquery-mapael/maps/usa_states.min.js' %}"></script>
-  <!-- ChartJS -->
-  <script src="{% static 'account/plugins/chart.js/Chart.min.js' %}"></script>
-
   <!-- Custom JS -->
   {% block js %}
   {% endblock %}
