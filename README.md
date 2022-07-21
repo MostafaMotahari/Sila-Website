@@ -1,6 +1,6 @@
 
 
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+![Logo](https://github.com/MostafaMotahari/Sila-Website/blob/master/images/website_poster.png)
 
 
 
@@ -16,24 +16,15 @@ Every match needs an information database so that the members of the league can 
 This website fulfills the high demand in Sila complex.
 
 Sila website is an site for your football information league
-## Environment Variables
+## Run Locally
 
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
-
-## Deployment
-
-To deploy this project, first clone this repo:
+First clone this repo:
 
 ```bash
     git clone https://github.com/MostafaMotahari/Sila-Website.git
 ```
 
-Go to repo directory, make an virtual enviroment and then install the requirements:
+Go to repo directory, make a virtual environment and then install the dependencies:
 ```bash
     cd Sila-Website
     pip install -r requirements
@@ -44,7 +35,21 @@ In production, use below command to collect all static files:
     python manage.py collectstatic
 ```
 
-Now you can easily run the webserver and see the result in https://localhost:8000
+Now you can easily start the webserver and see the result in https://localhost:8000
 ```bash
     python manage.py runserver
 ```
+## Documentation
+
+[Documentation](https://linktodocumentation)
+
+
+## TODO
+
+- Dockerize project
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
